@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <cstring>
+#include <string>
 
 #include "Complejo.h"
 
@@ -18,13 +18,15 @@ int main(int argc, char *argv[])
 	}
 
 	// strings que almacenan las instrucciones del usuario
-	string input("cin");
-	string output("cout");
-	string funcion("");
+	string input = "cin";
+	string output = "cout";
+	string funcion = "";
 
 	for(int i = 1; i < argc; i++)
 	{
-		if(!strcmp(argv[i], "-i"))
+		string aux = argv[i]; // se pasa el argumento a string para poder aplicarle las funciones de la clase string
+
+		if(!aux.compare("-i"))
 		{
 			if(i == argc - 1)
 			{
@@ -32,10 +34,10 @@ int main(int argc, char *argv[])
 				return 1;
 			}
 
-			input = string(argv[++i]);
+			input = argv[++i];
 		}
 
-		else if(!strcmp(argv[i], "-o"))
+		else if(!aux.compare("-o"))
 		{
 			if(i == argc - 1)
 			{
@@ -43,10 +45,10 @@ int main(int argc, char *argv[])
 				return 1;
 			}
 
-			output = string(argv[++i]);
+			output = argv[++i];
 		}
 
-		else if(!strcmp(argv[i], "-f"))
+		else if(!aux.compare("-f"))
 		{
 			if(i == argc - 1)
 			{
@@ -54,7 +56,7 @@ int main(int argc, char *argv[])
 				return 1;
 			}
 
-			funcion = string(argv[++i]);
+			funcion = argv[++i];
 		}
 
 		else
@@ -64,20 +66,18 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	// TODO: pasar funcion a minusculas
-
 	// se verifican las funciones requeridas por el usuario
-	if( funcion.compare( string("z") ) && funcion.compare( string("exp(z)") ) )
+	if( funcion.compare("z") && funcion.compare("exp(z)"))
 	{
 		cout << "Las transformaciones habilitadas son z y exp(z)" << endl;
 		return 1;
 	}
 
-	if(!input.compare( string("-") ))
-		input = string("cin");
+	if(!input.compare("-"))
+		input = "cin";
 
-	if(!output.compare( string("-") ))
-		output = string("cout");
+	if(!output.compare("-"))
+		output = "cout";
 
 	cout << input << " " << output << " " << funcion << endl; // Linea para probar que se esten guardando bien los inputs. ESTO NO VA
 
