@@ -16,16 +16,19 @@ private:
 public:
 	Imagen():sizeX(0),sizeY(0),intensidadMax(0),pixeles(NULL){};
 	Imagen(int sx, int sy, int im);
+	Imagen(const Imagen &);
 	~Imagen();
 
-	bool setImagen(int **pixeles, int sx, int sy);
+	bool setPixeles(int **pixeles, int sx, int sy);
 	void setSizeX(int);
 	void setSizeY(int);
 	void setIntensidadMax(int);
-	int **getPixeles();
-	int getSizeX();
-	int getSizeY();
-	int getIntensidadMax();
+	int **getPixeles() const;
+	int getSizeX() const;
+	int getSizeY() const;
+	int getIntensidadMax() const;
+
+	Imagen &operator = (const Imagen &);
 
 	void transformarZ(const Imagen &); // FALTA IMPLEMENTAR
 	void transformarExpZ(const Imagen &); // FALTA IMPLEMENTAR
