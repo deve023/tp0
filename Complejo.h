@@ -23,7 +23,12 @@ public:
 	void setImag(double);
 
 	double modulo() const;
+	double arg() const;
 	Complejo conjugado() const;
+
+	Complejo transformarZ() const;
+	Complejo transformarLn() const;
+
 	Complejo& operator = (const Complejo &);
 
 	friend bool operator == (const Complejo &, const Complejo &);

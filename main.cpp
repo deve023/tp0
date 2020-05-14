@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Complejo.h"
+#include "Imagen.h"
 
 using namespace std;
 

@@ -1,7 +1,7 @@
+#include "Complejo.h"
+
 #include <iostream>
 #include <cmath>
-
-#include "Complejo.h"
 
 double Complejo::getReal() const
 {
@@ -27,6 +27,24 @@ void Complejo::setImag(double i)
 double Complejo::modulo() const
 {
 	return sqrt(this->real * this->real + this->imag * this->imag);
+}
+
+double Complejo::arg() const
+{
+	return atan(this->imag / this->real);
+}
+
+Complejo Complejo::transformarZ() const
+{
+	return Complejo(this->real, this->imag);
+}
+
+Complejo Complejo::transformarLn() const
+{
+	double r = log(this->modulo());
+	double i = this->arg();
+
+	return Complejo(r, i);
 }
 
 Complejo Complejo::conjugado() const
