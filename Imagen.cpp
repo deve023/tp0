@@ -1,68 +1,62 @@
 #include "Imagen.h"
 
-Imagen::Imagen(int sx, int sy, int im)
+Imagen::Imagen(int **pxs, int sx, int sy, int im)
 {
-	this->sizeX = sx;
-	this->sizeY = sy;
+	this->pixeles = NULL;
 	this->intensidadMax = im;
-
-	if(sx > 0 && sy > 0)
-	{
-		this->pixeles = new int*[sy];
-		for(int i = 0; i < sy; i++)
-			this->pixeles[i] = new int[sx];
-	}
-
-	else
-		this->pixeles = NULL;
+	this->setPixeles(pxs, sx, sy);
 }
 
 Imagen::Imagen(const Imagen &i)
 {
-	this->sizeX = i.sizeX;
-	this->sizeY = i.sizeY;
+	this->pixeles = NULL;
 	this->intensidadMax = i.intensidadMax;
-
-	int **aux = i.getPixeles();
-	if(aux)
-	{
-		this->pixeles = new int*[this->sizeY];
-		for(int i = 0; i < this->sizeY; i++)
-		{
-			this->pixeles[i] = new int[this->sizeX];
-			for(int j = 0; j < this->sizeX; j++)
-				this->pixeles[i][j] = aux[i][j];
-		}
-	}
-
-	else
-		this->pixeles = NULL;
+	this->setPixeles(i.pixeles, i.sizeX, i.sizeY);
 }
 
 Imagen::~Imagen()
 {
-	delete[] pixeles;
+	if(this->pixeles)
+	{
+		for(int i = 0; i < this->sizeY; i++)
+			delete pixeles[i];
+		delete[] pixeles;
+	}
 }
 
 bool Imagen::setPixeles(int **pixeles, int sx, int sy)
 {
-	if(pixeles == NULL || sx != this->sizeX || sy != this->sizeY)
-		return false;
+	if(this->pixeles)
+	{
+		for(int i = 0; i < this->sizeY; i++)
+			delete pixeles[i];
+		delete[] pixeles;
+		this->pixeles = NULL;
+	}
 
+	this->sizeX = sx;
+	this->sizeY = sy;
+
+	this->pixeles = new int*[sy];
 	for(int i = 0; i < sy; i++)
+	{
+		this->pixeles[i] = new int[sx];
 		for(int j = 0; j < sx; j++)
 		{
 			// se verifica que no se copie una intensidad que exceda el rango permitido
 			if(pixeles[i][j] > this->intensidadMax || pixeles[i][j] < 0)
 			{
-				delete[] this->pixeles;
+				for(int i = 0; i < this->sizeY; i++)
+					delete pixeles[i];
+				delete[] pixeles;
 				this->pixeles = NULL;
+				
 				return false;
 			}
 
 			this->pixeles[i][j] = pixeles[i][j];
 		}
-
+	}
 	return true;
 }
 
@@ -81,9 +75,11 @@ void Imagen::setIntensidadMax(int im)
 	this->intensidadMax = im;
 }
 
-int **Imagen::getPixeles() const
+void Imagen::getPixeles(int ** &destino) const
 {
-	return this->pixeles;
+	for(int i = 0; i < this->sizeY; i++)
+		for(int j = 0; j < this->sizeX; j++)
+			destino[i][j] = this->pixeles[i][j];
 }
 
 int Imagen::getSizeX() const
@@ -101,34 +97,12 @@ int Imagen::getIntensidadMax() const
 	return this->intensidadMax;
 }
 
-Imagen &Imagen::operator = (const Imagen &imag)
+Imagen &Imagen::operator = (const Imagen &i)
 {
-	if(this->sizeX == imag.getSizeX() && this->sizeY == imag.getSizeY() && this->intensidadMax == imag.getIntensidadMax())
-		if(!imag.getPixeles())
-			this->pixeles = imag.getPixeles();
-		else
-			this->setPixeles(imag.getPixeles(), this->sizeX, this->sizeY);
-	else
-		this->sizeX = imag.getSizeX();
-		this->sizeY = imag.getSizeY();
-		this->intensidadMax = imag.getIntensidadMax();
-		delete[] this->pixeles;
-
-		int **aux = imag.getPixeles();
-		if(aux)
-		{
-			this->pixeles = new int*[this->sizeY];
-			for(int i = 0; i < this->sizeY; i++)
-			{
-				this->pixeles[i] = new int[this->sizeX];
-				for(int j = 0; j < this->sizeX; j++)
-					this->pixeles[i][j] = aux[i][j];
-			}
-		}
-		else
-			this->pixeles = imag.getPixeles();
+	this->intensidadMax = i.intensidadMax;
+	this->setPixeles(i.pixeles, i.sizeX, i.sizeY);
+	
 	return *this;
-
 }
 
 void transformarZ(const Imagen &imag)
