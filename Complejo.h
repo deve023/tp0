@@ -23,11 +23,10 @@ public:
 	void setImag(double);
 
 	double modulo() const;
-	double arg() const;
 	Complejo conjugado() const;
 
 	Complejo transformarZ() const;
-	Complejo transformarLn() const;
+	Complejo transformarExp() const;
 
 	Complejo& operator = (const Complejo &);
 

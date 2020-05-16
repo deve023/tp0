@@ -29,22 +29,17 @@ double Complejo::modulo() const
 	return sqrt(this->real * this->real + this->imag * this->imag);
 }
 
-double Complejo::arg() const
-{
-	return atan(this->imag / this->real);
-}
-
 Complejo Complejo::transformarZ() const
 {
 	return Complejo(this->real, this->imag);
 }
 
-Complejo Complejo::transformarLn() const
+Complejo Complejo::transformarExp() const
 {
-	double r = log(this->modulo());
-	double i = this->arg();
+	double r = cos(this->imag);
+	double i = sin(this->imag);
 
-	return Complejo(r, i);
+	return Complejo(r, i) * exp(this->real);
 }
 
 Complejo Complejo::conjugado() const

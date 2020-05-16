@@ -1,17 +1,27 @@
 #include "Imagen.h"
 
-Imagen::Imagen(int **pxs, int sx, int sy, int im)
+Imagen::Imagen(int **intensidadPixeles, int sx, int sy, int im)
 {
 	this->pixeles = NULL;
 	this->intensidadMax = im;
-	this->setPixeles(pxs, sx, sy);
+	this->setPixeles(intensidadPixeles, sx, sy);
 }
 
 Imagen::Imagen(const Imagen &i)
 {
-	this->pixeles = NULL;
 	this->intensidadMax = i.intensidadMax;
-	this->setPixeles(i.pixeles, i.sizeX, i.sizeY);
+	this->sizeX = i.sizeX;
+	this->sizeY = i.sizeY;
+
+	Pixel **aux = i.getPixeles();
+
+	this->pixeles = new Pixel*[this->sizeY];
+	for(int i = 0; i < this->sizeY; i++)
+	{
+		this->pixeles[i] = new Pixel[this->sizeX];
+		for(int j = 0; j < this->sizeX; j++)
+			this->pixeles[i][j] = aux[i][j];
+	}
 }
 
 Imagen::~Imagen()
@@ -19,44 +29,51 @@ Imagen::~Imagen()
 	if(this->pixeles)
 	{
 		for(int i = 0; i < this->sizeY; i++)
-			delete pixeles[i];
+			delete[] pixeles[i];
 		delete[] pixeles;
 	}
 }
 
-bool Imagen::setPixeles(int **pixeles, int sx, int sy)
+bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 {
 	if(this->pixeles)
 	{
 		for(int i = 0; i < this->sizeY; i++)
-			delete pixeles[i];
+			delete[] pixeles[i];
 		delete[] pixeles;
-		this->pixeles = NULL;
 	}
 
 	this->sizeX = sx;
 	this->sizeY = sy;
 
-	this->pixeles = new int*[sy];
-	for(int i = 0; i < sy; i++)
+	// Se calculan las distancias entre pixeles en el plano complejo
+	double distX = 2.0 / (sx - 1);
+	double distY = 2.0 / (sy - 1);
+
+	this->pixeles = new Pixel*[this->sizeY];
+	for(int i = 0; i < this->sizeY; i++)
 	{
-		this->pixeles[i] = new int[sx];
-		for(int j = 0; j < sx; j++)
+		this->pixeles[i] = new Pixel[this->sizeX];
+		for(int j = 0; j < this->sizeX; j++)
 		{
-			// se verifica que no se copie una intensidad que exceda el rango permitido
-			if(pixeles[i][j] > this->intensidadMax || pixeles[i][j] < 0)
+			int intensidad = intensidadPixeles[i][j];
+
+			// Si la intensidad se va de rango, aborto y devuelvo false
+			if(intensidad < 0 || intensidad > this->intensidadMax)
 			{
-				for(int i = 0; i < this->sizeY; i++)
-					delete pixeles[i];
+				for(int k = 0; k <= i; i++)
+					delete[] pixeles[i];
 				delete[] pixeles;
-				this->pixeles = NULL;
-				
+
 				return false;
 			}
 
-			this->pixeles[i][j] = pixeles[i][j];
+			Complejo posicion(-1 + j*distX, 1 - i*distY);
+
+			this->pixeles[i][j] = Pixel(intensidad, posicion);
 		}
 	}
+
 	return true;
 }
 
@@ -75,11 +92,17 @@ void Imagen::setIntensidadMax(int im)
 	this->intensidadMax = im;
 }
 
-void Imagen::getPixeles(int ** &destino) const
+Pixel **Imagen::getPixeles() const
 {
+	Pixel **copia = new Pixel*[this->sizeY];
 	for(int i = 0; i < this->sizeY; i++)
+	{
+		copia[i] = new Pixel[this->sizeX];
 		for(int j = 0; j < this->sizeX; j++)
-			destino[i][j] = this->pixeles[i][j];
+			copia[i][j] = this->pixeles[i][j];
+	}
+
+	return copia;
 }
 
 int Imagen::getSizeX() const
@@ -99,14 +122,38 @@ int Imagen::getIntensidadMax() const
 
 Imagen &Imagen::operator = (const Imagen &i)
 {
+
+	if(this->pixeles)
+	{
+		for(int i = 0; i < this->sizeY; i++)
+			delete this->pixeles[i];
+		delete[] pixeles;
+	}
+
 	this->intensidadMax = i.intensidadMax;
-	this->setPixeles(i.pixeles, i.sizeX, i.sizeY);
-	
+	this->sizeX = i.sizeX;
+	this->sizeY = i.sizeY;
+
+	Pixel **aux = i.getPixeles();
+
+	this->pixeles = new Pixel*[this->sizeY];
+	for(int i = 0; i < this->sizeY; i++)
+	{
+		this->pixeles[i] = new Pixel[this->sizeX];
+		for(int j = 0; j < this->sizeX; j++)
+			this->pixeles[i][j] = aux[i][j];
+	}
+
 	return *this;
 }
 
-void transformarZ(const Imagen &imag)
-{}
+Imagen Imagen::transformarZ() const
+{
+	Imagen destino(*this);
+	return destino;
+}
 
-void transformarExpZ(const Imagen &imag)
-{}
+Imagen Imagen::transformarExpZ() const
+{
+	return *this;
+}
