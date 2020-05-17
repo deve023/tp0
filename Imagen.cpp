@@ -15,13 +15,22 @@ Imagen::Imagen(const Imagen &i)
 
 	Pixel **aux = i.getPixeles();
 
-	this->pixeles = new Pixel*[this->sizeY];
-	for(int i = 0; i < this->sizeY; i++)
+	if(!aux)
+		this->pixeles = aux;
+	else
 	{
-		this->pixeles[i] = new Pixel[this->sizeX];
-		for(int j = 0; j < this->sizeX; j++)
-			this->pixeles[i][j] = aux[i][j];
+		this->pixeles = new Pixel*[this->sizeY];
+		for(int i = 0; i < this->sizeY; i++)
+		{
+			this->pixeles[i] = new Pixel[this->sizeX];
+			for(int j = 0; j < this->sizeX; j++)
+				this->pixeles[i][j] = aux[i][j];
+		}
 	}
+
+	for(int i = 0; i < this->sizeY; i++)
+		delete[] aux[i];
+	delete[] aux;
 }
 
 Imagen::~Imagen()
@@ -29,8 +38,8 @@ Imagen::~Imagen()
 	if(this->pixeles)
 	{
 		for(int i = 0; i < this->sizeY; i++)
-			delete[] pixeles[i];
-		delete[] pixeles;
+			delete[] this->pixeles[i];
+		delete[] this->pixeles;
 	}
 }
 
@@ -39,8 +48,9 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 	if(this->pixeles)
 	{
 		for(int i = 0; i < this->sizeY; i++)
-			delete[] pixeles[i];
-		delete[] pixeles;
+			delete[] this->pixeles[i];
+		delete[] this->pixeles;
+		this->pixeles = NULL;
 	}
 
 	this->sizeX = sx;
@@ -94,6 +104,9 @@ void Imagen::setIntensidadMax(int im)
 
 Pixel **Imagen::getPixeles() const
 {
+	if(!this->pixeles)
+		return NULL;
+
 	Pixel **copia = new Pixel*[this->sizeY];
 	for(int i = 0; i < this->sizeY; i++)
 	{
@@ -103,6 +116,21 @@ Pixel **Imagen::getPixeles() const
 	}
 
 	return copia;
+}
+
+int **Imagen::getIntensidadPixeles() const
+{
+	if(!this->pixeles)
+		return NULL;
+
+	int **intensidadPixeles = new int*[this->sizeY];
+	for(int i = 0; i < this->sizeY; i++)
+	{
+		intensidadPixeles[i] = new int[this->sizeX];
+		for(int j = 0; j < this->sizeX; j++)
+			intensidadPixeles[i][j] = this->pixeles[i][j].getIntensidad();
+	}
+	return intensidadPixeles;
 }
 
 int Imagen::getSizeX() const
@@ -149,11 +177,44 @@ Imagen &Imagen::operator = (const Imagen &i)
 
 Imagen Imagen::transformarZ() const
 {
-	Imagen destino(*this);
-	return destino;
+	return *this;
 }
 
 Imagen Imagen::transformarExpZ() const
 {
-	return *this;
+	Imagen dest;
+
+	// Si la imagen no tiene pixeles, se devuelve una imagen con valores nulos
+	if(!this->pixeles)
+		return dest;
+
+	dest.setIntensidadMax(this->intensidadMax);
+	dest.setSizeX(this->sizeX);
+	dest.setSizeY(this->sizeY);
+
+	double distX = 2.0 / (dest.sizeX - 1);
+	double distY = 2.0 / (dest.sizeY - 1);
+
+	dest.pixeles = new Pixel*[dest.sizeY];
+	for(int i = 0; i < dest.sizeY; i++)
+	{
+		dest.pixeles[i] = new Pixel[dest.sizeX];
+		for(int j = 0; j < dest.sizeX; j++)
+		{
+			Complejo posDest(-1 + j*distX, 1 - i*distY);
+			Complejo posOrig = posDest.transformarExp();
+
+			int jOrig = round((posOrig.getReal() + 1.0) / distX);
+			int iOrig = round((1.0 - posOrig.getImag()) / distY);
+
+			int intensidad;
+			if(iOrig < 0 || iOrig >= this->sizeY || jOrig < 0 || jOrig >= this->sizeX)
+				intensidad = 0;
+			else
+				intensidad = this->pixeles[iOrig][jOrig].getIntensidad();
+
+			dest.pixeles[i][j] = Pixel(intensidad, posDest);
+		}
+	}
+	return dest;
 }

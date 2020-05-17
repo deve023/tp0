@@ -7,6 +7,7 @@
 
 #include "Complejo.h"
 #include "Pixel.h"
+#include <math.h>
 
 class Imagen
 {
@@ -34,6 +35,7 @@ public:
 	// guarda en destino una copia de la matriz de pixeles
 	// pre: destino ya debe tener memoria pedida
 	Pixel **getPixeles() const;
+	int ** getIntensidadPixeles() const;
 	int getSizeX() const;
 	int getSizeY() const;
 	int getIntensidadMax() const;
