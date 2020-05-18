@@ -12,13 +12,13 @@ Pixel.o: Pixel.cpp Pixel.h Complejo.h
 Imagen.o: Imagen.cpp Imagen.h Pixel.h Complejo.h
 	$(CXX) $(CXXFLAGS) -c Imagen.cpp
 
-cmdline.o: cmdline.h
-	$(CXX) $(CXXFLAGS) -c cmdline.cpp
+comando.o: comando.h
+	$(CXX) $(CXXFLAGS) -c comando.cpp
 
-main.o: main.cpp Imagen.h cmdline.h
+main.o: main.cpp Imagen.h comando.h
 	$(CXX) $(CXXFLAGS) -c main.cpp
 
-tp0: main.o Pixel.o Imagen.o Complejo.o cmdline.o
+tp0: main.o Pixel.o Imagen.o Complejo.o comando.o
 	$(CXX) $(CXXFLAGS) $^ -o tp0
 
 clean:

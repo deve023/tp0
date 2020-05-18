@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 #define OPT_DEFAULT   0
 #define OPT_SEEN      1
 
@@ -28,4 +30,4 @@ public:
 	void parse(int, char * const []);
 };
 
-#endif
+#endif // _COMANDO_H_INCLUDED_
