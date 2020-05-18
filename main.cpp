@@ -75,14 +75,8 @@ static void opt_output(string const &arg)
 static void opt_function(string const &arg)
 {
 
-	istringstream iss(arg);
-	
-	if(iss.bad() || !(iss >> function))
-	{
-		cerr << "no puede leer la transformación." << endl;
-		exit(1);
-	}
-	
+	function = arg;
+
 	// Funcion por defecto
 	if(!function.compare("-")) 
 		function = "z";

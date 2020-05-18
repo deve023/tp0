@@ -5,13 +5,10 @@
 #include "comando.h"
 
 comando::comando()
-{
-}
+{}
 
 comando::comando(option_t *table) : option_table(table)
-{
-}
-
+{}
 
 void comando::parse(int argc, char * const argv[])
 {
@@ -32,7 +29,7 @@ void comando::parse(int argc, char * const argv[])
 		//
 		if (argv[i][0] != '-')
 		{
-			cerr << "Invalid non-option argument: " << argv[i] << endl;
+			cerr << "Argumento invalido, no es opcion: " << argv[i] << endl;
 			exit(1);
 		}
 
@@ -72,7 +69,7 @@ int comando::do_long_opt(const char *opt, const char *arg)
 			{	
 				if(arg == 0)
 				{
-					cerr << "Option requires argument: " << "--" << opt << "\n";
+					cerr << "La siguiente opcion requiere un argumento: " << "--" << opt << "\n";
 					exit(1);
 				}
 				op->parse(string(arg));
@@ -86,7 +83,7 @@ int comando::do_long_opt(const char *opt, const char *arg)
 		}
 	}
 
-	cerr << "Unknown option: " << "--" << opt << "." << endl;
+	cerr << "Opcion desconocida: " << "--" << opt << "." << endl;
 	exit(1);
 
 	return -1; // Valor de retorno para calmar al compilador
@@ -106,7 +103,7 @@ int comando::do_short_opt(const char *opt, const char *arg)
 			{	
 				if(arg == 0)
 				{
-					cerr << "Option requires argument: " << "-" << opt << "\n";
+					cerr << "La siguiente opcion requiere un argumento: " << "-" << opt << "\n";
 					exit(1);
 				}
 				op->parse(string(arg));
@@ -120,7 +117,7 @@ int comando::do_short_opt(const char *opt, const char *arg)
 		}
 	}
 
-	cerr << "Unknown option: " << "-" << opt << "." << endl;
+	cerr << "Opcion desconocida: " << "-" << opt << "." << endl;
 	exit(1);
 
 	return -1; // Valor de retorno para calmar al compilador
