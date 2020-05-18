@@ -1,5 +1,5 @@
 #ifndef _COMANDO_H_INCLUDED_
-#define _COMANDOH_INCLUDED_
+#define _COMANDO_H_INCLUDED_
 
 #include <string>
 #include <iostream>
