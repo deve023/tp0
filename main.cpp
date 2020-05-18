@@ -10,7 +10,7 @@
 
 using namespace std;
 
-char function[10];
+string function;
 static void opt_input(string const &);
 static void opt_output(string const &);
 static void opt_function(string const &);
@@ -29,8 +29,7 @@ static ostream *oss = 0;
 static fstream ifs;
 static fstream ofs;
 
-static void
-opt_input(string const &arg)
+static void opt_input(string const &arg)
 {
 	
 	if (arg == "-") {
@@ -55,8 +54,7 @@ opt_input(string const &arg)
 	}
 }
 
-static void
-opt_output(string const &arg)
+static void opt_output(string const &arg)
 {
 	if (arg == "-") {
 		oss = &cout;
@@ -76,9 +74,12 @@ opt_output(string const &arg)
 	ofs<<"P2"<<endl<<"segunda linea"<<endl;
 }
 
-static void
-opt_function(string const &arg)
+static void opt_function(string const &arg)
 {
+	if (arg == "-") 
+		;
+		//hago transformacion identidad
+
 	istringstream iss(arg);
 	
 	
@@ -95,11 +96,24 @@ opt_function(string const &arg)
 		     << endl;
 		exit(1);
 	}
+
+	if (!(function.compare("exp(z)")))
+		;//hago transformación exponencial
+	else if (!(function.compare("z")))
+		;
+		//hago transformación identidad
+	else {
+		cerr << "no es una  transformación: "
+		     << arg
+		     << "."
+		     << endl;
+		exit(1);
+	}
+
 	//TENGO EN FUNCTION GUARDADA LA TRANSFORMACIÓN QUE TENGO QUE HACER
 }
 
-static void
-opt_help(string const &arg)
+static void opt_help(string const &arg)
 {
 	cout << "tp0 [-f function] [-i file] [-o file]"
 	     << endl;
