@@ -219,16 +219,29 @@ Imagen Imagen::transformarExpZ() const
 	return dest;
 }
 
-void Imagen::leerArchivoPgm(Imagen b,istream *iss)
+bool Imagen::leerArchivoPgm(Imagen & imagen, istream *iss)
 {
+	/*
 	string line;
 	while ((*iss).good()){
-        getline (*iss,line);
+        getline(*iss,line);
         cout << line<<" \n";
 	}
+	*/
+	return true;
 }
 
-void Imagen::escribirArchivoPgm(Imagen b,ostream *oss)
+void Imagen::escribirArchivoPgm(ostream *oss)
 {
-	(*oss)<<"P2"<<endl<<"segunda linea"<<endl;
+	(*oss)<<"P2"<<endl
+	<< this->sizeX << " " << this->sizeY << endl
+	<< this->intensidadMax << endl;
+
+	int i, j;
+	for(i = 0; i < this->sizeY; i++)
+	{
+		for(j = 0; j < this->sizeX - 1; j++)
+			(*oss) << this->pixeles[i][j].getIntensidad() << " ";
+		(*oss) << this->pixeles[i][j].getIntensidad() << endl;
+	}
 }
