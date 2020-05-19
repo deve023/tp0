@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 #include "comando.h"
+#include "Imagen.h"
 
 using namespace std;
 
@@ -43,13 +44,6 @@ static void opt_input(string const &arg)
 		cerr << "No se puede abrir " << arg << "." << endl;
 		exit(1);
 	}
-
-	//NO SE HACE ACÁ PERO SIRVE  PARA LEER LINEA POR LINEA
-	string line;
-	while (ifs.good()){
-        getline (ifs,line);
-        cout << line<<" \n";
-	}
 }
 
 static void opt_output(string const &arg)
@@ -68,8 +62,6 @@ static void opt_output(string const &arg)
 		exit(1);
 	}
 
-	//COMO ESCRIBIR EN EL ARCHIVO
-	ofs<<"P2"<<endl<<"segunda linea"<<endl;
 }
 
 static void opt_function(string const &arg)
@@ -98,14 +90,11 @@ static void opt_help(string const &arg)
 
 int main(int argc, char * const argv[])
 {
-
 	comando comando(options);
 	comando.parse(argc, argv);
+//probando funciones de lectura/escritura
+	Imagen Imagen;
+	Imagen.leerArchivoPgm(Imagen,iss);
+	Imagen.escribirArchivoPgm(Imagen,oss);
 
-	//cout << function << endl;
-	//opt_function ("exp(z)");
-	//cout<<function<<endl;
-	//opt_output("file.pgm");
-	//opt_input("file.pgm");
-	//opt_help("");
 }

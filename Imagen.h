@@ -44,6 +44,8 @@ public:
 
 	Imagen transformarZ() const;
 	Imagen transformarExpZ() const; // FALTA IMPLEMENTAR
+	void leerArchivoPgm(Imagen, istream *);
+	void escribirArchivoPgm(Imagen, ostream *);
 };
 
 #endif

@@ -218,3 +218,17 @@ Imagen Imagen::transformarExpZ() const
 	}
 	return dest;
 }
+
+void Imagen::leerArchivoPgm(Imagen b,istream *iss)
+{
+	string line;
+	while ((*iss).good()){
+        getline (*iss,line);
+        cout << line<<" \n";
+	}
+}
+
+void Imagen::escribirArchivoPgm(Imagen b,ostream *oss)
+{
+	(*oss)<<"P2"<<endl<<"segunda linea"<<endl;
+}
