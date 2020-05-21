@@ -106,12 +106,20 @@ int main(int argc, char * const argv[])
 	// Creo esta imagen de prueba
 	Imagen Imagen(v, 24, 7, 999);
 
+	
 	// Escribo esta imagen de prueba
-	Imagen.escribirArchivoPgm(oss);
+	//Imagen.escribirArchivoPgm(oss);
+
+	// Leo imagen 
+	Imagen.leerArchivoPgm (Imagen,iss);
 
 	// Libero memoria para el vector de intensidades de prueba que cree
 	for(int i = 0; i < 7; i++)
 		delete[] v[i];
 	delete[] v;
+	
+	
 
 }
+
+

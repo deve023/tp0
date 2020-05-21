@@ -220,14 +220,41 @@ Imagen Imagen::transformarExpZ() const
 }
 
 bool Imagen::leerArchivoPgm(Imagen & imagen, istream *iss)
-{
-	/*
+{	
+	int n=0;
 	string line;
-	while ((*iss).good()){
-        getline(*iss,line);
-        cout << line<<" \n";
+    getline(*iss,line);
+
+    if (line.compare("P2")){
+        cerr << "El archivo de lectura comienza con" << line<<  endl;
+		exit(1);
+    }
+    getline(*iss,line);//Asumo que hay comentario:
+    cout<<line<<endl;
+
+    *iss >> this->sizeX;
+    *iss >> n;
+	*iss>>this->intensidadMax;
+	cout<<this->sizeX<<endl<<n<<endl<<this->intensidadMax<<endl;
+
+	int i,j,k;
+
+	for (i=0;i<this->sizeX;i++)
+	{
+		for (j=0;j<n;j++){	
+			*iss>>k;
+			this->pixeles[i][j].setIntensidad(k);
+		}
 	}
-	*/
+
+	//IMPRIMO LO QUE ACABO DE HACER PARA VERLO
+	for(i = 0; i < this->sizeX; i++)
+	{
+		for(j = 0; j < n - 1; j++)
+			(cout) << this->pixeles[i][j].getIntensidad() << " ";
+		(cout) << this->pixeles[i][j].getIntensidad() << endl;
+	}
+
 	return true;
 }
 
