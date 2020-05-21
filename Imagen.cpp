@@ -267,8 +267,8 @@ bool Imagen::leerArchivoPgm(istream *iss)
 				}		 
 		}
 	}
-
-	if(!(*iss).eof()){
+	//Chequeamos si la matriz es más grande de lo que dice. Si hay algo atrás del último número (sea un espacio, una letra, etc) no nos importa
+	if((*iss>>i)){ 
 		for(int i = 0; i < y; i++)
 			delete[] aux[i];
 		delete[] aux;
