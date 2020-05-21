@@ -221,7 +221,6 @@ Imagen Imagen::transformarExpZ() const
 
 bool Imagen::leerArchivoPgm(istream *iss)
 {	
-	bool error = true; // Podriamos usarlo para tener registrado si hay o no un error
 	string line;
     getline(*iss,line);
 
@@ -259,7 +258,13 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	{
 		aux[i] = new int[x];
 		for (j=0;j<x;j++){	
-				*iss>>aux[i][j];			 
+				if(!(*iss>>aux[i][j])){
+					for(int k = 0; k < i; k++)
+						delete[] aux[i];
+					delete[] aux;
+					cerr<<"La matriz no es del tamaño especificado"<<endl;
+					return false;
+				}		 
 		}
 	}
 
@@ -268,7 +273,11 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	this->intensidadMax = intensidadMax;
 
 	if(!this->setPixeles(aux, x, y)){ // no hace falta chequear si la imagen esta llena o vacia porque set pixeles se encarga de eso
-		error=false;
+		for(int i = 0; i < y; i++)
+			delete[] aux[i];
+		delete[] aux;
+		cerr<<"Fallo setPixeles"<<endl; //QUE MENSAJE PONEMOS?
+		return false;
 	} 
 
 	//IMPRIMO LO QUE ACABO DE HACER PARA VERLO SOLO PARA TESTEAR
