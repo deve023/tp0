@@ -221,7 +221,7 @@ Imagen Imagen::transformarExpZ() const
 
 bool Imagen::leerArchivoPgm(istream *iss)
 {	
-	int n=0;
+	bool error = false; // Podriamos usarlo para tener registrado si hay o no un error
 	string line;
     getline(*iss,line);
 
@@ -229,14 +229,19 @@ bool Imagen::leerArchivoPgm(istream *iss)
         cerr << "El archivo de lectura comienza con" << line <<  endl; // "No es archivo PGM" no seria mejor?
 		exit(1);
     }
-    getline(*iss,line);//Asumo que hay comentario:
-    cout<<line<<endl;
+
+    //antes de seguir leyendo podriamos chequear si no hubieron errores, asi con cada etapa
+    do {
+    getline(*iss,line);
+	} while (line[0] == '#');
+
+	istringstream issAux(line);
 
     int x, y;
-    *iss >> x;
-    *iss >> y;
-	*iss >> this->intensidadMax;
-	cout<< x << " " << y << endl << this->intensidadMax << endl;
+    issAux >> x;
+    issAux >> y;
+
+	*iss >> intensidadMax;
 
 	int i,j,k;
 
@@ -250,15 +255,27 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		}
 	}
 
-	this->setPixeles(aux, x, y);
 
-	//IMPRIMO LO QUE ACABO DE HACER PARA VERLO
+	// y finalmente si no hubieron errores metemos la data
+	this->intensidadMax = intensidadMax;
+	this->setPixeles(aux, x, y); // no hace falta chequear si la imagen esta llena o vacia porque set pixeles se encarga de eso
+
+	//IMPRIMO LO QUE ACABO DE HACER PARA VERLO SOLO PARA TESTEAR
+	cout << this->sizeX << " " << this->sizeY << endl << this->intensidadMax << endl;
+
 	for(i = 0; i < this->sizeY; i++)
 	{
 		for(j = 0; j < this->sizeX - 1; j++)
 			(cout) << this->pixeles[i][j].getIntensidad() << " ";
 		(cout) << this->pixeles[i][j].getIntensidad() << endl;
 	}
+
+	// Libero memoria del vector auxiliar. esto debe hacerse solo si se pidio memoria en primer lugar
+	// ojo por si hubo error antes y no se creo y estamos borrando de mas o si se pidio y hubo error en el medio, etc
+	for(int i = 0; i < y; i++)
+		delete[] aux[i];
+	delete[] aux;
+
 
 	return true;
 }

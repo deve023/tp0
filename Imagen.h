@@ -9,6 +9,13 @@
 #include "Pixel.h"
 #include <math.h>
 
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <cstdlib>
+using namespace std;
+
 class Imagen
 {
 
