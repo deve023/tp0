@@ -221,16 +221,15 @@ Imagen Imagen::transformarExpZ() const
 
 bool Imagen::leerArchivoPgm(istream *iss)
 {	
-	bool error = false; // Podriamos usarlo para tener registrado si hay o no un error
+	bool error = true; // Podriamos usarlo para tener registrado si hay o no un error
 	string line;
     getline(*iss,line);
 
     if (line.compare("P2")){
-        cerr << "El archivo de lectura comienza con" << line <<  endl; // "No es archivo PGM" no seria mejor?
-		exit(1);
+        cerr << "No es archivo PGM, comienza con" << line <<  endl; 
+		return false; //error=false;
     }
 
-    //antes de seguir leyendo podriamos chequear si no hubieron errores, asi con cada etapa
     do {
     getline(*iss,line);
 	} while (line[0] == '#');
@@ -238,7 +237,8 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	istringstream issAux(line);
 
     int x, y;
-    issAux >> x;
+    if(!(issAux >> x))
+    	cerr << "error" << endl;//NUNCA ME TIRA ESTE MENSAJE 
     issAux >> y;
 
 	*iss >> intensidadMax;
@@ -250,15 +250,17 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	{
 		aux[i] = new int[x];
 		for (j=0;j<x;j++){	
-			*iss>>aux[i][j];
-			 
+				*iss>>aux[i][j];			 
 		}
 	}
 
 
 	// y finalmente si no hubieron errores metemos la data
 	this->intensidadMax = intensidadMax;
-	this->setPixeles(aux, x, y); // no hace falta chequear si la imagen esta llena o vacia porque set pixeles se encarga de eso
+
+	if(!this->setPixeles(aux, x, y)){ // no hace falta chequear si la imagen esta llena o vacia porque set pixeles se encarga de eso
+		error=false;
+	} 
 
 	//IMPRIMO LO QUE ACABO DE HACER PARA VERLO SOLO PARA TESTEAR
 	cout << this->sizeX << " " << this->sizeY << endl << this->intensidadMax << endl;
@@ -277,7 +279,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	delete[] aux;
 
 
-	return true;
+	return error;
 }
 
 void Imagen::escribirArchivoPgm(ostream *oss)

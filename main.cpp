@@ -121,7 +121,8 @@ int main(int argc, char * const argv[])
 		delete[] v[i];
 	delete[] v;
 	*/
-	
+	ifs.close();
+	ofs.close();
 
 }
 
