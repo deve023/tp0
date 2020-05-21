@@ -237,11 +237,20 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	istringstream issAux(line);
 
     int x, y;
-    if(!(issAux >> x))
-    	cerr << "error" << endl;//NUNCA ME TIRA ESTE MENSAJE 
-    issAux >> y;
+    if(!(issAux >> x)){
+    	cerr << "No puede leer el tamaño de la imagen" << endl;
+    	return false; //error=false;
+    }
+    
+    if(!(issAux >> y)){
+    	cerr << "No puede leer el tamaño de la imagen" << endl;
+    	return false;//error=false;
+    }
 
-	*iss >> intensidadMax;
+	if(!(*iss >> intensidadMax)){
+		cerr << "No puede leer la intensidad máxima" << endl;
+    	return false;//error=false;
+	}
 
 	int i,j;
 
@@ -279,7 +288,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	delete[] aux;
 
 
-	return error;
+	return true;//return error;
 }
 
 void Imagen::escribirArchivoPgm(ostream *oss)
