@@ -219,38 +219,43 @@ Imagen Imagen::transformarExpZ() const
 	return dest;
 }
 
-bool Imagen::leerArchivoPgm(Imagen & imagen, istream *iss)
+bool Imagen::leerArchivoPgm(istream *iss)
 {	
 	int n=0;
 	string line;
     getline(*iss,line);
 
     if (line.compare("P2")){
-        cerr << "El archivo de lectura comienza con" << line<<  endl;
+        cerr << "El archivo de lectura comienza con" << line <<  endl; // "No es archivo PGM" no seria mejor?
 		exit(1);
     }
     getline(*iss,line);//Asumo que hay comentario:
     cout<<line<<endl;
 
-    *iss >> this->sizeX;
-    *iss >> n;
-	*iss>>this->intensidadMax;
-	cout<<this->sizeX<<endl<<n<<endl<<this->intensidadMax<<endl;
+    int x, y;
+    *iss >> x;
+    *iss >> y;
+	*iss >> this->intensidadMax;
+	cout<< x << " " << y << endl << this->intensidadMax << endl;
 
 	int i,j,k;
 
-	for (i=0;i<this->sizeX;i++)
+	int **aux = new int*[y];
+	for(i=0; i < y; i++)
 	{
-		for (j=0;j<n;j++){	
+		aux[i] = new int[x];
+		for (j=0;j<x;j++){	
 			*iss>>k;
-			this->pixeles[i][j].setIntensidad(k);
+			aux[i][j] = k;
 		}
 	}
 
+	this->setPixeles(aux, x, y);
+
 	//IMPRIMO LO QUE ACABO DE HACER PARA VERLO
-	for(i = 0; i < this->sizeX; i++)
+	for(i = 0; i < this->sizeY; i++)
 	{
-		for(j = 0; j < n - 1; j++)
+		for(j = 0; j < this->sizeX - 1; j++)
 			(cout) << this->pixeles[i][j].getIntensidad() << " ";
 		(cout) << this->pixeles[i][j].getIntensidad() << endl;
 	}

@@ -93,6 +93,7 @@ int main(int argc, char * const argv[])
 	comando comando(options);
 	comando.parse(argc, argv);
 
+	/*
 	//probando funciones de lectura/escritura
 	// Creo un vector de intensidades para crear una imagen y escribirla. Solo para probar
 	int **v = new int*[7];
@@ -106,18 +107,20 @@ int main(int argc, char * const argv[])
 	// Creo esta imagen de prueba
 	Imagen Imagen(v, 24, 7, 999);
 
-	
+	*/
 	// Escribo esta imagen de prueba
 	//Imagen.escribirArchivoPgm(oss);
 
+	Imagen imagen;
 	// Leo imagen 
-	Imagen.leerArchivoPgm (Imagen,iss);
+	imagen.leerArchivoPgm(iss);
 
+	/*
 	// Libero memoria para el vector de intensidades de prueba que cree
 	for(int i = 0; i < 7; i++)
 		delete[] v[i];
 	delete[] v;
-	
+	*/
 	
 
 }
