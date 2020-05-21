@@ -243,15 +243,15 @@ bool Imagen::leerArchivoPgm(istream *iss)
 
 	*iss >> intensidadMax;
 
-	int i,j,k;
+	int i,j;
 
 	int **aux = new int*[y];
 	for(i=0; i < y; i++)
 	{
 		aux[i] = new int[x];
 		for (j=0;j<x;j++){	
-			*iss>>k;
-			aux[i][j] = k;
+			*iss>>aux[i][j];
+			 
 		}
 	}
 
