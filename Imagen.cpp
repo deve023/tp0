@@ -268,6 +268,14 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		}
 	}
 
+	if(!(*iss).eof()){
+		for(int i = 0; i < y; i++)
+			delete[] aux[i];
+		delete[] aux;
+		cerr<<"La matriz no es del tamaño especificado"<<endl; 
+		return false;
+	}
+
 
 	// y finalmente si no hubieron errores metemos la data
 	this->intensidadMax = intensidadMax;
