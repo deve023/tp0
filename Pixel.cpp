@@ -23,7 +23,7 @@ Complejo Pixel::getPos() const
 	return this->pos;
 }
 
-Pixel &Pixel::operator = (const Pixel &px)
+const Pixel &Pixel::operator = (const Pixel &px)
 {
 	this->intensidad = px.intensidad;
 	this->pos = px.pos;

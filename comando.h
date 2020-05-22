@@ -18,13 +18,16 @@ struct option_t {
 	int flags;
 };
 
-class comando {
+class comando
+{
 
+private:
 	option_t *option_table;
 
 	comando();
 	int do_long_opt(const char *, const char *);
 	int do_short_opt(const char *, const char *);
+	
 public:
 	comando(option_t *);
 	void parse(int, char * const []);

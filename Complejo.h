@@ -1,5 +1,5 @@
-#ifndef COMPLEJO_INCLUDED
-#define COMPLEJO_INCLUDED
+#ifndef COMPLEJO_INCLUDED_
+#define COMPLEJO_INCLUDED_
 
 #include <iostream>
 using namespace std;
@@ -22,26 +22,16 @@ public:
 	void setReal(double);
 	void setImag(double);
 
-	double modulo() const;
-	Complejo conjugado() const;
+	const Complejo& operator = (const Complejo &);
+	Complejo operator * (double);
 
+	// Aplica la transformacion identidad al complejo y devuelve el resultado
 	Complejo transformarZ() const;
+
+	// Aplica la transformacion exp(z) al complejo y devuelve el resultado
 	Complejo transformarExp() const;
 
-	Complejo& operator = (const Complejo &);
-
-	friend bool operator == (const Complejo &, const Complejo &);
-	friend Complejo operator + (const Complejo &, const Complejo &);
-	friend Complejo operator + (const Complejo &, double);
-	friend Complejo operator - (const Complejo &, const Complejo &);
-	friend Complejo operator - (const Complejo &, double);
-	friend Complejo operator * (const Complejo &, const Complejo &);
-	friend Complejo operator * (const Complejo &, double);
-	friend Complejo operator / (const Complejo &, const Complejo &);
-	friend Complejo operator / (const Complejo &, double);
-
-	friend ostream & operator << (ostream &, const Complejo &);
 };
 
 
-#endif // COMPLEJO_INCLUDED
+#endif // COMPLEJO_INCLUDED_

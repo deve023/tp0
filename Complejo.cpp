@@ -23,10 +23,17 @@ void Complejo::setImag(double i)
 	this->imag = i;
 }
 
-
-double Complejo::modulo() const
+const Complejo& Complejo::operator = (const Complejo &c)
 {
-	return sqrt(this->real * this->real + this->imag * this->imag);
+	this->setReal(c.getReal());
+	this->setImag(c.getImag());
+
+	return *this;
+}
+
+Complejo Complejo::operator * (double f)
+{
+	return Complejo(this->real*f ,this->imag*f);
 }
 
 Complejo Complejo::transformarZ() const
@@ -40,68 +47,4 @@ Complejo Complejo::transformarExp() const
 	double i = sin(this->imag);
 
 	return Complejo(r, i) * exp(this->real);
-}
-
-Complejo Complejo::conjugado() const
-{
-	return Complejo(this->real, -this->imag);
-}
-
-Complejo& Complejo::operator = (const Complejo &c)
-{
-	this->setReal(c.getReal());
-	this->setImag(c.getImag());
-
-	return *this;
-}
-
-bool operator == (const Complejo &c1, const Complejo &c2)
-{
-	return (c1.real == c2.imag) && (c1.imag == c2.imag);
-}
-
-Complejo operator + (const Complejo &c1, const Complejo &c2)
-{
-	return Complejo(c1.real+c2.real , c1.imag+c2.imag);
-}
-
-Complejo operator + (const Complejo &c, double f)
-{
-	return Complejo(c.real+f ,c.imag);
-}
-
-Complejo operator - (const Complejo &c1, const Complejo &c2)
-{
-	return Complejo(c1.real-c2.real , c1.imag-c2.imag);
-}
-
-Complejo operator - (const Complejo &c, double f)
-{
-	return Complejo(c.real-f ,c.imag);
-}
-
-Complejo operator * (const Complejo &c1, const Complejo &c2)
-{
-	return Complejo(c1.real*c2.real - c1.imag*c2.imag , c1.real*c2.imag + c1.imag*c2.real);
-}
-
-Complejo operator * (const Complejo &c, double f)
-{
-	return Complejo(c.real*f ,c.imag*f);
-}
-
-Complejo operator / (const Complejo &c1, const Complejo &c2)
-{
-	Complejo ans = c1 * c2.conjugado();
-	return ans / c2.modulo();
-}
-
-Complejo operator / (const Complejo &c, double f)
-{
-	return Complejo(c.real/f ,c.imag/f);
-}
-
-ostream & operator << (ostream &os, const Complejo &c)
-{
-	return os << '(' << c.real << ',' << c.imag << ')';
 }

@@ -44,10 +44,6 @@ void comando::parse(int argc, char * const argv[])
 
 	for (option_t *op = option_table; !END_OF_OPTIONS(op); ++op)
 	{
-
-#define OPTION_NAME(op) \
-	(op->short_name ? op->short_name : op->long_name)
-
 		if(op->flags & OPT_SEEN)
 			continue;
 		

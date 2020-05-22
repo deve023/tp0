@@ -16,11 +16,11 @@ public:
 	~Pixel();
 
 	void setIntensidad(int);
-	void setPos(Complejo c);
+	void setPos(Complejo);
 	int getIntensidad() const;
 	Complejo getPos() const;
 
-	Pixel &operator = (const Pixel &);
+	const Pixel &operator = (const Pixel &);
 };
 
 #endif

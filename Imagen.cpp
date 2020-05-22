@@ -1,5 +1,9 @@
 #include "Imagen.h"
 
+#include <iostream>
+#include <sstream>
+#include <math.h>
+
 Imagen::Imagen(int **intensidadPixeles, int sx, int sy, int im)
 {
 	this->pixeles = NULL;
@@ -314,7 +318,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	return true;//return error;
 }
 
-void Imagen::escribirArchivoPgm(ostream *oss)
+void Imagen::escribirArchivoPgm(ostream *oss) const
 {
 	(*oss)<<"P2"<<endl
 	<< this->sizeX << " " << this->sizeY << endl
