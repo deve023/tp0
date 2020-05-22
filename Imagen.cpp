@@ -172,6 +172,10 @@ Imagen &Imagen::operator = (const Imagen &i)
 			this->pixeles[i][j] = aux[i][j];
 	}
 
+	for(int i = 0; i < this->sizeY; i++)
+		delete[] aux[i];
+	delete[] aux;
+
 	return *this;
 }
 
