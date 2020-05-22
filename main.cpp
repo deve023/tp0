@@ -99,6 +99,8 @@ int main(int argc, char * const argv[])
 	if(!orig.leerArchivoPgm(iss))
 	{
 		cout << "Error al leer imagen" << endl;
+		ifs.close();
+		ofs.close();
 		return 1;
 	}
 	
