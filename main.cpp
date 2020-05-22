@@ -17,7 +17,7 @@ static void opt_help(string const &);
 static option_t options[] = {
 	{1, "i", "input", "-", opt_input, OPT_DEFAULT},
 	{1, "o", "output", "-", opt_output, OPT_DEFAULT},
-	{1, "f", "function", "-", opt_function, OPT_DEFAULT},
+	{1, "f", "funcion", "-", opt_function, OPT_DEFAULT},
 	{0, "h", "help", NULL, opt_help, OPT_DEFAULT},
 	{0, },
 };
@@ -83,7 +83,7 @@ static void opt_function(string const &arg)
 
 static void opt_help(string const &arg)
 {
-	cout << "tp0 [-f function] [-i file] [-o file]"
+	cout << "tp0 [-f funcion] [-i archivo] [-o archivo]"
 	     << endl;
 	exit(0);
 }

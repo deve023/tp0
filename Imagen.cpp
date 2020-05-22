@@ -237,6 +237,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		return false;
     }
 
+    // Se saltean los comentarios
     do {
     getline(*iss,line);
 	} while (line[0] == '#');
@@ -270,12 +271,13 @@ bool Imagen::leerArchivoPgm(istream *iss)
 					for(int k = 0; k < i; k++)
 						delete[] aux[i];
 					delete[] aux;
-					cerr<<"La matriz no es del tamaño especificado"<<endl;
+					cerr<<"Error al leer las intensidades"<<endl;
 					return false;
 				}		 
 		}
 	}
-	//Chequeamos si la matriz es más grande de lo que dice. Si hay algo atrás del último número (sea un espacio, una letra, etc) no nos importa
+	// Se chequea si la matriz es más grande de lo que dice, si hay algun numero mas.
+	// Si hay algo atrás del último número (sea un espacio, una letra, etc) no es tomado en cuenta.
 	if((*iss>>i)){ 
 		for(int i = 0; i < y; i++)
 			delete[] aux[i];
@@ -285,37 +287,24 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	}
 
 
-	// y finalmente si no hubieron errores metemos la data
+	// Se copia la data al objeto imagen.
 	this->intensidadMax = intensidadMax;
 
 	if(!this->setPixeles(aux, x, y)){ // no hace falta chequear si la imagen esta llena o vacia porque set pixeles se encarga de eso
 		for(int i = 0; i < y; i++)
 			delete[] aux[i];
 		delete[] aux;
-		cerr<<"Fallo setPixeles"<<endl; //QUE MENSAJE PONEMOS?
+		cerr<<"Las intensidades de la imagen excedieron el rango"<<endl; //QUE MENSAJE PONEMOS?
 		return false;
 	} 
-
-	/*
-	//IMPRIMO LO QUE ACABO DE HACER PARA VERLO SOLO PARA TESTEAR
-	cout << this->sizeX << " " << this->sizeY << endl << this->intensidadMax << endl;
-
-	for(i = 0; i < this->sizeY; i++)
-	{
-		for(j = 0; j < this->sizeX - 1; j++)
-			(cout) << this->pixeles[i][j].getIntensidad() << " ";
-		(cout) << this->pixeles[i][j].getIntensidad() << endl;
-	}
-	*/
 	
-	// Libero memoria del vector auxiliar. esto debe hacerse solo si se pidio memoria en primer lugar
-	// ojo por si hubo error antes y no se creo y estamos borrando de mas o si se pidio y hubo error en el medio, etc
+	// Se libera memoria del vector auxiliar utilizado.
 	for(int i = 0; i < y; i++)
 		delete[] aux[i];
 	delete[] aux;
 
 
-	return true;//return error;
+	return true;
 }
 
 void Imagen::escribirArchivoPgm(ostream *oss) const
