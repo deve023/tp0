@@ -226,7 +226,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 
     if (line.compare("P2")){
         cerr << "No es archivo PGM, comienza con" << line <<  endl; 
-		return false; //error=false;
+		return false;
     }
 
     do {
@@ -238,17 +238,17 @@ bool Imagen::leerArchivoPgm(istream *iss)
     int x, y;
     if(!(issAux >> x)){
     	cerr << "No puede leer el tamaño de la imagen" << endl;
-    	return false; //error=false;
+    	return false;
     }
     
     if(!(issAux >> y)){
     	cerr << "No puede leer el tamaño de la imagen" << endl;
-    	return false;//error=false;
+    	return false;
     }
 
 	if(!(*iss >> intensidadMax)){
 		cerr << "No puede leer la intensidad máxima" << endl;
-    	return false;//error=false;
+    	return false;
 	}
 
 	int i,j;
@@ -288,6 +288,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		return false;
 	} 
 
+	/*
 	//IMPRIMO LO QUE ACABO DE HACER PARA VERLO SOLO PARA TESTEAR
 	cout << this->sizeX << " " << this->sizeY << endl << this->intensidadMax << endl;
 
@@ -297,7 +298,8 @@ bool Imagen::leerArchivoPgm(istream *iss)
 			(cout) << this->pixeles[i][j].getIntensidad() << " ";
 		(cout) << this->pixeles[i][j].getIntensidad() << endl;
 	}
-
+	*/
+	
 	// Libero memoria del vector auxiliar. esto debe hacerse solo si se pidio memoria en primer lugar
 	// ojo por si hubo error antes y no se creo y estamos borrando de mas o si se pidio y hubo error en el medio, etc
 	for(int i = 0; i < y; i++)

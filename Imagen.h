@@ -34,7 +34,7 @@ public:
 	// se le pasa una matriz con la intensidad de cada pixel
 	// pre: pixeles debe no ser NULL y sx e sy almacenar sus dimensiones
 	// Devuelve false si no pudo almacenar los valores. En ese caso deja this->pixeles apuntando a NULL
-	bool setPixeles(int **intensidadPixeles, int sx, int sy); // FALTA IMPLEMENTAR
+	bool setPixeles(int **intensidadPixeles, int sx, int sy);
 	void setSizeX(int);
 	void setSizeY(int);
 	void setIntensidadMax(int);
@@ -50,7 +50,7 @@ public:
 	Imagen &operator = (const Imagen &);
 
 	Imagen transformarZ() const;
-	Imagen transformarExpZ() const; // FALTA IMPLEMENTAR
+	Imagen transformarExpZ() const;
 	bool leerArchivoPgm(istream *);
 	void escribirArchivoPgm(ostream *);
 };
