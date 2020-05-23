@@ -74,7 +74,7 @@ static void opt_function(string const &arg)
 		function = "z";
 
 	// se verifica que se haya pasado una funcion viable
-	if(function.compare("expz") && function.compare("z"))
+	if(function.compare("exp(z)") && function.compare("z"))
 	{
 		cerr << arg << " no es una  transformación aceptada." << endl;
 		exit(1);
@@ -83,8 +83,7 @@ static void opt_function(string const &arg)
 
 static void opt_help(string const &arg)
 {
-	cout << "tp0 [-f funcion] [-i archivo] [-o archivo]"
-	     << endl;
+	cout << "tp0 [-f funcion] [-i archivo] [-o archivo]"<<endl<<"Funciones disponibles: z y \"exp(z)\" " << endl;
 	exit(0);
 }
 
@@ -109,10 +108,10 @@ int main(int argc, char * const argv[])
 	// Se aplica la transformacion correspondiente
 	if(!function.compare("z"))
 		dest = orig.transformarZ();
-	else if (!function.compare("expz"))
+	else if (!function.compare("exp(z)"))
 		dest = orig.transformarExpZ();
 	else
-		cerr<<"Transformación no disponible:"<<function<<endl;
+		cerr << function << " no es una  transformación aceptada." << endl;
 
 	// Se escribe la imagen transformada
 	dest.escribirArchivoPgm(oss);

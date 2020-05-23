@@ -29,7 +29,7 @@ void comando::parse(int argc, char * const argv[])
 		//
 		if (argv[i][0] != '-')
 		{
-			cerr << "Argumento invalido, no es opcion: " << argv[i] << endl;
+			cerr << "Argumento invalido, no es opcion: " << argv[i] << endl << "Usar: --help para más información" << endl;
 			exit(1);
 		}
 
@@ -65,7 +65,7 @@ int comando::do_long_opt(const char *opt, const char *arg)
 			{	
 				if(arg == 0)
 				{
-					cerr << "La siguiente opcion requiere un argumento: " << "--" << opt << "\n";
+					cerr << "La siguiente opcion requiere un argumento: " << "--" << opt << endl << "Usar: --help para más información" << endl;
 					exit(1);
 				}
 				op->parse(string(arg));
@@ -79,7 +79,7 @@ int comando::do_long_opt(const char *opt, const char *arg)
 		}
 	}
 
-	cerr << "Opcion desconocida: " << "--" << opt << "." << endl;
+	cerr << "Opcion desconocida: " << "--" << opt << "." << endl << "Usar: --help para más información" << endl;
 	exit(1);
 
 	return -1; // Valor de retorno para calmar al compilador
@@ -99,7 +99,7 @@ int comando::do_short_opt(const char *opt, const char *arg)
 			{	
 				if(arg == 0)
 				{
-					cerr << "La siguiente opcion requiere un argumento: " << "-" << opt << "\n";
+					cerr << "La siguiente opcion requiere un argumento: " << "-" << opt << endl << "Usar: --help para más información" << endl;
 					exit(1);
 				}
 				op->parse(string(arg));
@@ -113,7 +113,7 @@ int comando::do_short_opt(const char *opt, const char *arg)
 		}
 	}
 
-	cerr << "Opcion desconocida: " << "-" << opt << "." << endl;
+	cerr << "Opcion desconocida: " << "-" << opt << "." << endl << "Usar: tp0 --help" << endl;
 	exit(1);
 
 	return -1; // Valor de retorno para calmar al compilador
