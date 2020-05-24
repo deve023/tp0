@@ -251,13 +251,13 @@ bool Imagen::leerArchivoPgm(istream *iss)
 
     int x, y;
     if(!(issAux >> x))
-    	return false;
+		return false;
     
     if(!(issAux >> y))
-    	return false;
+		return false;
 
 	if(!(*iss >> intensidadMax))
-    	return false;
+		return false;
 
 	int i,j;
 	int **aux = new int*[y];
