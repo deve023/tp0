@@ -30,11 +30,11 @@ Imagen::Imagen(const Imagen &i)
 			for(int j = 0; j < this->sizeX; j++)
 				this->pixeles[i][j] = aux[i][j];
 		}
-	}
 
-	for(int i = 0; i < this->sizeY; i++)
-		delete[] aux[i];
-	delete[] aux;
+		for(int i = 0; i < this->sizeY; i++)
+			delete[] aux[i];
+		delete[] aux;
+	}
 }
 
 Imagen::~Imagen()
@@ -76,8 +76,9 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 			if(intensidad < 0 || intensidad > this->intensidadMax)
 			{
 				for(int k = 0; k <= i; i++)
-					delete[] pixeles[i];
-				delete[] pixeles;
+					delete[] this->pixeles[i];
+				delete[] this->pixeles;
+				this->pixeles = NULL;
 
 				return false;
 			}
@@ -160,6 +161,7 @@ Imagen &Imagen::operator = (const Imagen &i)
 		for(int i = 0; i < this->sizeY; i++)
 			delete this->pixeles[i];
 		delete[] pixeles;
+		this->pixeles = NULL;
 	}
 
 	this->intensidadMax = i.intensidadMax;
@@ -167,6 +169,11 @@ Imagen &Imagen::operator = (const Imagen &i)
 	this->sizeY = i.sizeY;
 
 	Pixel **aux = i.getPixeles();
+	if(aux == NULL)
+	{	
+		this->pixeles = NULL;
+		return *this;
+	}
 
 	this->pixeles = new Pixel*[this->sizeY];
 	for(int i = 0; i < this->sizeY; i++)
@@ -309,7 +316,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 
 void Imagen::escribirArchivoPgm(ostream *oss) const
 {
-	(*oss)<<"P2"<<endl
+	(*oss) << "P2" << endl
 	<< this->sizeX << " " << this->sizeY << endl
 	<< this->intensidadMax << endl;
 
