@@ -12,7 +12,7 @@ Pixel.o: Pixel.cpp Pixel.h Complejo.h
 Imagen.o: Imagen.cpp Imagen.h Pixel.h Complejo.h
 	$(CXX) $(CXXFLAGS) -c Imagen.cpp
 
-comando.o: comando.h
+comando.o: comando.cpp comando.h
 	$(CXX) $(CXXFLAGS) -c comando.cpp
 
 main.o: main.cpp Imagen.h comando.h
