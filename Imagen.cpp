@@ -237,12 +237,10 @@ Imagen Imagen::transformarExpZ() const
 bool Imagen::leerArchivoPgm(istream *iss)
 {	
 	string line;
+	
     getline(*iss,line);
-
-    if (line.compare("P2")){
-        cerr << "No es archivo PGM, comienza con" << line <<  endl; 
+    if(line.compare("P2")) 
 		return false;
-    }
 
     // Se saltean los comentarios
     do {
@@ -252,56 +250,51 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	istringstream issAux(line);
 
     int x, y;
-    if(!(issAux >> x)){
-    	cerr << "No puede leer el tamaño de la imagen" << endl;
+    if(!(issAux >> x))
     	return false;
-    }
     
-    if(!(issAux >> y)){
-    	cerr << "No puede leer el tamaño de la imagen" << endl;
+    if(!(issAux >> y))
     	return false;
-    }
 
-	if(!(*iss >> intensidadMax)){
-		cerr << "No puede leer la intensidad máxima" << endl;
+	if(!(*iss >> intensidadMax))
     	return false;
-	}
 
 	int i,j;
-
 	int **aux = new int*[y];
 	for(i=0; i < y; i++)
 	{
 		aux[i] = new int[x];
-		for (j=0;j<x;j++){	
-				if(!(*iss>>aux[i][j])){
-					for(int k = 0; k < i; k++)
-						delete[] aux[i];
-					delete[] aux;
-					cerr<<"Error al leer las intensidades"<<endl;
-					return false;
-				}		 
-		}
+		for (j=0;j<x;j++)
+			if(!(*iss>>aux[i][j]))
+			{
+				for(int k = 0; k < i; k++)
+					delete[] aux[i];
+				delete[] aux;
+					
+				return false;
+			}		 
 	}
+	
 	// Se chequea si la matriz es más grande de lo que dice, si hay algun numero mas.
 	// Si hay algo atrás del último número (sea un espacio, una letra, etc) no es tomado en cuenta.
-	if((*iss>>i)){ 
+	if((*iss>>i))
+	{ 
 		for(int i = 0; i < y; i++)
 			delete[] aux[i];
 		delete[] aux;
-		cerr<<"La matriz no es del tamaño especificado"<<endl; 
+
 		return false;
 	}
 
 
 	// Se copia la data al objeto imagen.
 	this->intensidadMax = intensidadMax;
-
-	if(!this->setPixeles(aux, x, y)){ // no hace falta chequear si la imagen esta llena o vacia porque set pixeles se encarga de eso
+	if(!this->setPixeles(aux, x, y))
+	{
 		for(int i = 0; i < y; i++)
 			delete[] aux[i];
 		delete[] aux;
-		cerr<<"Las intensidades de la imagen excedieron el rango"<<endl; //QUE MENSAJE PONEMOS?
+		
 		return false;
 	} 
 	
