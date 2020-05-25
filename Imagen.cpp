@@ -281,8 +281,8 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		for (j=0;j<x;j++)
 			if(!(*iss>>aux[i][j]))
 			{
-				for(int k = 0; k < i; k++)
-					delete[] aux[i];
+				for(int k = 0; k <= i; k++)
+					delete[] aux[k];
 				delete[] aux;
 					
 				return false;
