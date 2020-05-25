@@ -27,8 +27,7 @@ public:
 	Imagen(const Imagen &);
 	~Imagen();
 
-	void setSizeX(int);
-	void setSizeY(int);
+
 	void setIntensidadMax(int);
 
 	// Setea los valores de pixeles, sizeX y sizeY

@@ -92,15 +92,6 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 	return true;
 }
 
-void Imagen::setSizeX(int sx)
-{
-	this->sizeX = sx;
-}
-
-void Imagen::setSizeY(int sy)
-{
-	this->sizeY = sy;
-}
 
 void Imagen::setIntensidadMax(int im)
 {
@@ -204,8 +195,8 @@ Imagen Imagen::transformarExpZ() const
 		return dest;
 
 	dest.setIntensidadMax(this->intensidadMax);
-	dest.setSizeX(this->sizeX);
-	dest.setSizeY(this->sizeY);
+	dest.sizeX=this->sizeX;
+	dest.sizeY=this->sizeY;
 
 	double distX = 2.0 / (dest.sizeX - 1);
 	double distY = 2.0 / (dest.sizeY - 1);
@@ -237,10 +228,11 @@ Imagen Imagen::transformarExpZ() const
 bool Imagen::leerArchivoPgm(istream *iss)
 {	
 	string line;
-	
+	const string p2 = "P2";
     getline(*iss,line);
     if(line.compare("P2")) 
 		return false;
+
 
     // Se saltean los comentarios
     do {
