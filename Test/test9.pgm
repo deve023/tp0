@@ -1,4 +1,5 @@
 P2
+#Test 9: Debe mostrar mensaje de error ya que especifica una intensidad máxima negativa
 5 3
 -7
 1 2 3 4 5
