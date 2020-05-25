@@ -57,6 +57,15 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 		this->pixeles = NULL;
 	}
 
+	if (sx<0 || sy<0)
+		return false;
+
+	if (sx==0 && sy!=0)
+		return false;
+
+	if (sx!=0 && sy==0)
+		return false;
+
 	this->sizeX = sx;
 	this->sizeY = sy;
 
@@ -93,9 +102,13 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 }
 
 
-void Imagen::setIntensidadMax(int im)
+bool Imagen::setIntensidadMax(int im)
 {
+	if (im<0)
+		return false;
+
 	this->intensidadMax = im;
+	return true;
 }
 
 Pixel **Imagen::getPixeles() const
@@ -249,6 +262,15 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		return false;
 
 	if(!(*iss >> intensidadMax))
+		return false;
+
+	if(x<0 || y<0 || intensidadMax < 0)
+		return false; 
+
+	if (x==0 && y!=0)
+		return false;
+
+	if (x!=0 && y==0)
 		return false;
 
 	int i,j;

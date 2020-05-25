@@ -28,7 +28,7 @@ public:
 	~Imagen();
 
 
-	void setIntensidadMax(int);
+	bool setIntensidadMax(int);
 
 	// Setea los valores de pixeles, sizeX y sizeY
 	// se le pasa una matriz con la intensidad de cada pixel, y sus dimensiones.
