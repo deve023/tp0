@@ -84,8 +84,8 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 			// Si la intensidad se va de rango, aborto y devuelvo false
 			if(intensidad < 0 || intensidad > this->intensidadMax)
 			{
-				for(int k = 0; k <= i; i++)
-					delete[] this->pixeles[i];
+				for(int k = 0; k <= i; k++)
+					delete[] this->pixeles[k];
 				delete[] this->pixeles;
 				this->pixeles = NULL;
 
