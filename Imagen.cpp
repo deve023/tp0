@@ -57,13 +57,7 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 		this->pixeles = NULL;
 	}
 
-	if (sx<0 || sy<0)
-		return false;
-
-	if (sx==0 && sy!=0)
-		return false;
-
-	if (sx!=0 && sy==0)
+	if (sx<1 || sy<1)
 		return false;
 
 	this->sizeX = sx;
@@ -82,7 +76,7 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 			int intensidad = intensidadPixeles[i][j];
 
 			// Si la intensidad se va de rango, aborto y devuelvo false
-			if(intensidad < 0 || intensidad > this->intensidadMax)
+			if(intensidad < 1 || intensidad > this->intensidadMax)
 			{
 				for(int k = 0; k <= i; k++)
 					delete[] this->pixeles[k];
@@ -264,14 +258,9 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	if(!(*iss >> intensidadMax))
 		return false;
 
-	if(x<0 || y<0 || intensidadMax < 0)
+	if(x<1 || y<1 || intensidadMax < 1)
 		return false; 
 
-	if (x==0 && y!=0)
-		return false;
-
-	if (x!=0 && y==0)
-		return false;
 
 	int i,j;
 	int **aux = new int*[y];
