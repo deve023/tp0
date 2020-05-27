@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <sstream>
-
+#define INTENSIDADMAX_MAX 65536 //Valor máximo para intensidadMax según el formato PGM
 using namespace std;
 
 class Imagen

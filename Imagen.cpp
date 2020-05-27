@@ -97,7 +97,7 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 
 bool Imagen::setIntensidadMax(int im)
 {
-	if (im<0)
+	if (im<1 || im > INTENSIDADMAX_MAX)
 		return false;
 
 	this->intensidadMax = im;
@@ -257,7 +257,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	if(!(*iss >> intensidadMax))
 		return false;
 
-	if(x<1 || y<1 || intensidadMax < 1)
+	if(x<1 || y<1 || intensidadMax < 1 || intensidadMax > INTENSIDADMAX_MAX)
 		return false; 
 
 
