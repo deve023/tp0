@@ -1,8 +1,8 @@
+#include "comando.h"
+
 #include <string>
 #include <cstdlib>
 #include <iostream>
-
-#include "comando.h"
 
 comando::comando()
 {}

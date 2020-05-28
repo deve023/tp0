@@ -1,6 +1,5 @@
 #include "Complejo.h"
 
-#include <iostream>
 #include <cmath>
 
 double Complejo::getReal() const
@@ -31,7 +30,7 @@ const Complejo& Complejo::operator = (const Complejo &c)
 	return *this;
 }
 
-Complejo Complejo::operator * (double f)
+Complejo Complejo::operator * (double f) const
 {
 	return Complejo(this->real*f ,this->imag*f);
 }

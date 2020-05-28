@@ -14,7 +14,7 @@ struct option_t {
 	const char *short_name;
 	const char *long_name;
 	const char *def_value;
-	void (*parse)(std::string const &);
+	void (*parse)(string const &);
 	int flags;
 };
 

@@ -1,5 +1,7 @@
 #include "Pixel.h"
 
+#include "Complejo.h"
+
 Pixel::~Pixel()
 {}
 

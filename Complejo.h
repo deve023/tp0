@@ -1,7 +1,6 @@
 #ifndef COMPLEJO_INCLUDED_
 #define COMPLEJO_INCLUDED_
 
-#include <iostream>
 using namespace std;
 
 class Complejo
@@ -23,7 +22,7 @@ public:
 	void setImag(double);
 
 	const Complejo& operator = (const Complejo &);
-	Complejo operator * (double);
+	Complejo operator * (double) const;
 
 	// Aplica la transformacion identidad al complejo y devuelve el resultado
 	Complejo transformarZ() const;
