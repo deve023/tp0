@@ -1,5 +1,4 @@
 #include <fstream>
-#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
@@ -100,8 +99,6 @@ int main(int argc, char * const argv[])
 	if(!orig.leerArchivoPgm(iss))
 	{
 		cout << "Error al leer imagen" << endl;
-		ifs.close();
-		ofs.close();
 		return 1;
 	}
 	
@@ -115,20 +112,11 @@ int main(int argc, char * const argv[])
 	else
 	{
 		cerr << function << " no es una  transformación aceptada." << endl;
-
-		ifs.close();
-		ofs.close();
 		return 1;
 	}
 
 	// Se escribe la imagen transformada
 	dest.escribirArchivoPgm(oss);
 
-	// Se cierran los archivos
-	ifs.close();
-	ofs.close();
-
 	return 0;
 }
-
-
