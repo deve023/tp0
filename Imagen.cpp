@@ -6,6 +6,15 @@
 
 Imagen::Imagen(int **intensidadPixeles, int sx, int sy, int im)
 {
+	// Si los valores son invalidos, se crea una imagen nula por defecto.
+	if(sx < 1 || sy < 1 || im < 1 || im > INTENSIDADMAX_MAX || intensidadPixeles == NULL)
+	{
+		this->intensidadMax = 1;
+		this->sizeX = 0;
+		this->sizeY = 0;
+		this->pixeles = NULL;
+	}
+
 	this->pixeles = NULL;
 	this->intensidadMax = im;
 	this->setPixeles(intensidadPixeles, sx, sy);
@@ -47,8 +56,20 @@ Imagen::~Imagen()
 	}
 }
 
+bool Imagen::setIntensidadMax(int im)
+{
+	if(im < 1 || im > INTENSIDADMAX_MAX)
+		return false;
+
+	this->intensidadMax = im;
+	return true;
+}
+
 bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 {
+	if(sx<1 || sy<1 || intensidadPixeles == NULL)
+		return false;
+
 	if(this->pixeles)
 	{
 		for(int i = 0; i < this->sizeY; i++)
@@ -57,8 +78,6 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 		this->pixeles = NULL;
 	}
 
-	if (sx<1 || sy<1)
-		return false;
 
 	this->sizeX = sx;
 	this->sizeY = sy;
@@ -91,16 +110,6 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 		}
 	}
 
-	return true;
-}
-
-
-bool Imagen::setIntensidadMax(int im)
-{
-	if (im<1 || im > INTENSIDADMAX_MAX)
-		return false;
-
-	this->intensidadMax = im;
 	return true;
 }
 
@@ -234,11 +243,10 @@ Imagen Imagen::transformarExpZ() const
 bool Imagen::leerArchivoPgm(istream *iss)
 {	
 	string line;
-	const string p2 = "P2";
+
     getline(*iss,line);
     if(line.compare("P2")) 
 		return false;
-
 
     // Se saltean los comentarios
     do {
@@ -248,18 +256,14 @@ bool Imagen::leerArchivoPgm(istream *iss)
 	istringstream issAux(line);
 
     int x, y;
-    if(!(issAux >> x))
+    if(!(issAux >> x) || x < 1)
 		return false;
     
-    if(!(issAux >> y))
+    if(!(issAux >> y) || y < 1)
 		return false;
 
-	if(!(*iss >> intensidadMax))
+	if(!(*iss >> intensidadMax) || intensidadMax < 1 || intensidadMax > INTENSIDADMAX_MAX)
 		return false;
-
-	if(x<1 || y<1 || intensidadMax < 1 || intensidadMax > INTENSIDADMAX_MAX)
-		return false; 
-
 
 	int i,j;
 	int **aux = new int*[y];
@@ -288,7 +292,6 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		return false;
 	}
 
-
 	// Se copia la data al objeto imagen.
 	this->intensidadMax = intensidadMax;
 	if(!this->setPixeles(aux, x, y))
@@ -296,6 +299,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		for(int i = 0; i < y; i++)
 			delete[] aux[i];
 		delete[] aux;
+
 		return false;
 	} 
 	
@@ -304,12 +308,15 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		delete[] aux[i];
 	delete[] aux;
 
-
 	return true;
 }
 
 void Imagen::escribirArchivoPgm(ostream *oss) const
 {
+	// Si la imagen es nula, no se escribe el archivo.
+	if(!this->pixeles)
+		return;
+
 	(*oss) << "P2" << endl
 	<< this->sizeX << " " << this->sizeY << endl
 	<< this->intensidadMax << endl;

@@ -1,4 +1,5 @@
 #Test 5: Debe mostrar mensaje de error ya que comienza con un comentario
+# en vez de comenzar con P2
 P2
 5 5
 9
