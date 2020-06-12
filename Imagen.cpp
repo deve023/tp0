@@ -244,13 +244,18 @@ bool Imagen::leerArchivoPgm(istream *iss)
 {	
 	string line;
 
-    getline(*iss,line);
+    if(!getline(*iss,line))
+    	return false;
+
     if(line.compare("P2")) 
 		return false;
 
     // Se saltean los comentarios
     do {
-    getline(*iss,line);
+
+    if(!getline(*iss,line))
+    	return false;
+
 	} while (line[0] == '#');
 
 	istringstream issAux(line);
