@@ -125,6 +125,7 @@ void Matriz<T>::setMatriz(T** m, int x, int y)
 		for (int i=0; i < this->y; i++)
 			delete this->matriz [i];
 		delete this -> matriz;
+		this->matriz=NULL;
 	}
 
 	if (m==NULL)
