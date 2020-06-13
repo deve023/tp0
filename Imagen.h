@@ -21,10 +21,10 @@ class Imagen
 private:
 	int sizeX, sizeY;
 	int intensidadMax;
-	Pixel **pixeles;
+	Matriz<Pixel> pixeles;
 
 public:
-	Imagen():sizeX(0),sizeY(0),intensidadMax(1),pixeles(NULL){};
+	Imagen();
 	Imagen(Matriz<int> intensidadPixeles, int sx, int sy, int im);
 	Imagen(const Imagen &);
 	~Imagen();
@@ -49,8 +49,7 @@ public:
 	// Si this->pixeles es NULL devuelve NULL.
 	// pre: imagen deberia existir y tener una matriz de pixeles asociada
 	// post: se devuelve un puntero a la matriz copia de pixeles
-	Pixel **getPixeles() const;
-
+	Matriz<Pixel> getPixeles() const  ;
 	// Se devuelve un puntero a una matriz dinamica que almacena las intensidades de los pixeles asociados a la imagen
 	// Si this->pixeles es NULL devuelve NULL.
 	// pre: imagen deberia existir y tener una matriz de pixeles asociada

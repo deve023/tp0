@@ -4,6 +4,12 @@
 #include <sstream>
 #include <math.h>
 
+Imagen:: Imagen ()
+{
+	this->intensidadMax=1;
+	this->pixeles.setMatriz(NULL,0,0);
+}
+
 Imagen::Imagen(Matriz<int> intensidadPixeles, int sx, int sy, int im)
 {
 	// Si los valores son invalidos, se crea una imagen nula por defecto.
@@ -12,10 +18,10 @@ Imagen::Imagen(Matriz<int> intensidadPixeles, int sx, int sy, int im)
 		this->intensidadMax = 1;
 		this->sizeX = 0;
 		this->sizeY = 0;
-		this->pixeles = NULL;
+		this->pixeles.setMatriz(NULL,0,0);
 	}
 
-	this->pixeles = NULL;
+	this->pixeles.setMatriz(NULL,0,0);
 	this->intensidadMax = im;
 	this->setPixeles(intensidadPixeles, sx, sy);
 }
@@ -26,8 +32,10 @@ Imagen::Imagen(const Imagen &i)
 	this->sizeX = i.sizeX;
 	this->sizeY = i.sizeY;
 
-	Pixel **aux = i.getPixeles();
+	Matriz<Pixel> aux = i.getPixeles();
 
+	this->pixeles = aux;
+	/*
 	if(!aux)
 		this->pixeles = aux;
 	else
@@ -44,16 +52,11 @@ Imagen::Imagen(const Imagen &i)
 			delete[] aux[i];
 		delete[] aux;
 	}
+	*/
 }
 
 Imagen::~Imagen()
 {
-	if(this->pixeles)
-	{
-		for(int i = 0; i < this->sizeY; i++)
-			delete[] this->pixeles[i];
-		delete[] this->pixeles;
-	}
 }
 
 bool Imagen::setIntensidadMax(int im)
@@ -70,13 +73,8 @@ bool Imagen::setPixeles(Matriz<int> intensidadPixeles, int sx, int sy)
 	if(sx<1 || sy<1 || intensidadPixeles.esVacia()==true)
 		return false;
 
-	if(this->pixeles)
-	{
-		for(int i = 0; i < this->sizeY; i++)
-			delete[] this->pixeles[i];
-		delete[] this->pixeles;
-		this->pixeles = NULL;
-	}
+	if(this->pixeles.esVacia()==false)
+		this->pixeles.setMatriz(NULL,0,0);
 
 	this->sizeX = sx;
 	this->sizeY = sy;
@@ -85,52 +83,36 @@ bool Imagen::setPixeles(Matriz<int> intensidadPixeles, int sx, int sy)
 	double distX = 2.0 / (sx - 1);
 	double distY = 2.0 / (sy - 1);
 
-	this->pixeles = new Pixel*[this->sizeY];
+	Matriz<Pixel> aux (this->sizeX, this->sizeY);
+	
 	for(int i = 0; i < this->sizeY; i++)
 	{
-		this->pixeles[i] = new Pixel[this->sizeX];
 		for(int j = 0; j < this->sizeX; j++)
 		{
 			int intensidad = intensidadPixeles[i][j];
 
 			// Si la intensidad se va de rango, aborto y devuelvo false
 			if(intensidad < 0 || intensidad > this->intensidadMax)
-			{
-				for(int k = 0; k <= i; k++)
-					delete[] this->pixeles[k];
-				delete[] this->pixeles;
-				this->pixeles = NULL;
 				return false;
-			}
 
 			Complejo posicion(-1 + j*distX, 1 - i*distY);
 
-			this->pixeles[i][j] = Pixel(intensidad, posicion);
+			aux [i][j] = Pixel(intensidad, posicion);
 		}
 	}
+	this->pixeles = aux;
 
 	return true;
 }
 
-Pixel **Imagen::getPixeles() const
+Matriz<Pixel> Imagen::getPixeles() const
 {
-	if(!this->pixeles)
-		return NULL;
-
-	Pixel **copia = new Pixel*[this->sizeY];
-	for(int i = 0; i < this->sizeY; i++)
-	{
-		copia[i] = new Pixel[this->sizeX];
-		for(int j = 0; j < this->sizeX; j++)
-			copia[i][j] = this->pixeles[i][j];
-	}
-
-	return copia;
+	return this->pixeles;
 }
 
 Matriz<int> Imagen::getIntensidadPixeles() const
 {
-	if(!this->pixeles)
+	if(this->pixeles.esVacia()==true)
 	{	
 		Matriz<int> aux; 
 		return aux; //Devuelvo matriz vacía
@@ -160,36 +142,20 @@ int Imagen::getIntensidadMax() const
 
 Imagen &Imagen::operator = (const Imagen &i)
 {
-	if(this->pixeles)
-	{
-		for(int i = 0; i < this->sizeY; i++)
-			delete this->pixeles[i];
-		delete[] pixeles;
-		this->pixeles = NULL;
-	}
+	if(this->pixeles.esVacia()==false)
+		this->pixeles.setMatriz(NULL,0,0);
 
 	this->intensidadMax = i.intensidadMax;
 	this->sizeX = i.sizeX;
 	this->sizeY = i.sizeY;
 
-	Pixel **aux = i.getPixeles();
-	if(aux == NULL)
+	if(i.getPixeles().esVacia())
 	{	
-		this->pixeles = NULL;
+		this->pixeles.setMatriz(NULL,0,0);
 		return *this;
 	}
 
-	this->pixeles = new Pixel*[this->sizeY];
-	for(int i = 0; i < this->sizeY; i++)
-	{
-		this->pixeles[i] = new Pixel[this->sizeX];
-		for(int j = 0; j < this->sizeX; j++)
-			this->pixeles[i][j] = aux[i][j];
-	}
-
-	for(int i = 0; i < this->sizeY; i++)
-		delete[] aux[i];
-	delete[] aux;
+	this->pixeles = i.getPixeles();
 
 	return *this;
 }
@@ -204,7 +170,7 @@ Imagen Imagen::transformarExpZ() const
 	Imagen dest;
 
 	// Si la imagen no tiene pixeles, se devuelve una imagen con valores nulos
-	if(!this->pixeles)
+	if(this->pixeles.esVacia()==true)
 		return dest;
 
 	dest.setIntensidadMax(this->intensidadMax);
@@ -214,10 +180,9 @@ Imagen Imagen::transformarExpZ() const
 	double distX = 2.0 / (dest.sizeX - 1);
 	double distY = 2.0 / (dest.sizeY - 1);
 
-	dest.pixeles = new Pixel*[dest.sizeY];
+	Matriz<Pixel> aux(this->sizeX,this->sizeY);
 	for(int i = 0; i < dest.sizeY; i++)
 	{
-		dest.pixeles[i] = new Pixel[dest.sizeX];
 		for(int j = 0; j < dest.sizeX; j++)
 		{
 			Complejo posDest(-1 + j*distX, 1 - i*distY);
@@ -231,10 +196,10 @@ Imagen Imagen::transformarExpZ() const
 				intensidad = 0;
 			else
 				intensidad = this->pixeles[iOrig][jOrig].getIntensidad();
-
-			dest.pixeles[i][j] = Pixel(intensidad, posDest);
+			aux [i][j] = Pixel(intensidad, posDest);
 		}
 	}
+	dest.pixeles=aux;
 	return dest;
 }
 
@@ -294,7 +259,7 @@ bool Imagen::leerArchivoPgm(istream *iss)
 void Imagen::escribirArchivoPgm(ostream *oss) const
 {
 	// Si la imagen es nula, no se escribe el archivo.
-	if(!this->pixeles)
+	if(this->pixeles.esVacia()==true)
 		return;
 
 	(*oss) << "P2" << endl

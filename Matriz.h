@@ -35,8 +35,8 @@ public:
 	Matriz (int , int );
 	~Matriz();
 
-	bool esVacia ();	
-	Arreglo operator[](int);
+	bool esVacia ()const;	
+	Arreglo operator[](int) const;
 	void setMatriz (T**, int , int);
 	const Matriz &operator = (const Matriz &);
 	void imprimir();
@@ -101,18 +101,17 @@ Matriz<T>::~Matriz()
 
 
 template<typename T>
-bool Matriz<T>::esVacia (){
+bool Matriz<T>::esVacia ()const{
   	if (this->matriz==NULL)
   		return true;
   	return false;
   }
 
 template<typename T>
-typename Matriz<T>::Arreglo Matriz<T>::operator[](int indice) 
+typename Matriz<T>::Arreglo Matriz<T>::operator[](int indice) const
 {
     return Arreglo(matriz[indice]);
 }
-
 
 template <typename T>
 void Matriz<T>::setMatriz(T** m, int x, int y)
@@ -140,11 +139,7 @@ void Matriz<T>::setMatriz(T** m, int x, int y)
 			for (int j = 0; j<this->x; j++)
 				this->matriz [i][j] = m[i][j];
 		}
-
-
-
 	}
-
 }	
 
 template <typename T>

@@ -93,7 +93,7 @@ int main(int argc, char * const argv[])
 	comando.parse(argc, argv);
 
 	Imagen orig;
-	
+
 	// Leo imagen 
 	if(!orig.leerArchivoPgm(iss))
 	{
@@ -113,9 +113,7 @@ int main(int argc, char * const argv[])
 		cerr << function << " no es una  transformación aceptada." << endl;
 		return 1;
 	}
-
 	// Se escribe la imagen transformada
 	dest.escribirArchivoPgm(oss);
-
 	return 0;
 }
