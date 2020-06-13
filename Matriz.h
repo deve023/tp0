@@ -120,11 +120,18 @@ void Matriz<T>::setMatriz(T** m, int x, int y)
 	this->x=x;
 	this->y=y;
 
-	if (!m)
+	if (this->matriz)
+	{
+		for (int i=0; i < this->y; i++)
+			delete this->matriz [i];
+		delete this -> matriz;
+	}
+
+	if (m==NULL)
 		this->matriz=NULL;
 
-	else{
-
+	else
+	{
 		this->matriz = new T * [this->y];
 
 		for(int i = 0; i < this->y; i++){	
@@ -133,7 +140,10 @@ void Matriz<T>::setMatriz(T** m, int x, int y)
 				this->matriz [i][j] = m[i][j];
 		}
 
+
+
 	}
+
 }	
 
 template <typename T>
