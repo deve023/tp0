@@ -51,8 +51,8 @@ Matriz<T>::Arreglo::Arreglo(T* a) : arreglo(a)
 template<typename T>
 T& Matriz<T>::Arreglo::operator[](int indice) 
 {
-            return arreglo[indice];
-        }
+	return arreglo[indice];
+}
 
 template<typename T>
 Matriz<T>::Matriz () : x(0), y(0), matriz(NULL)
@@ -67,12 +67,12 @@ Matriz<T>::Matriz (const Matriz &m)
 
 	this->matriz = new T * [this->y];
 
-	for(int i = 0; i < this->y; i++){	
-			this->matriz[i] = new T [this->x];
-			for (int j = 0;j<this->x;j++)
-				this->matriz[i][j]=m.matriz[i][j]; 
+	for(int i = 0; i < this->y; i++)
+	{	
+		this->matriz[i] = new T [this->x];
+		for (int j = 0;j<this->x;j++)
+			this->matriz[i][j]=m.matriz[i][j]; 
 	} 
-
 }
 
 template<typename T>
@@ -84,7 +84,7 @@ Matriz<T>:: Matriz (int x, int y)
 	this->matriz = new T * [this->y];
 
 	for(int i = 0; i < this->y; i++)
-			this->matriz[i] = new T [this->x];
+		this->matriz[i] = new T [this->x];
 
 }
 
@@ -101,11 +101,12 @@ Matriz<T>::~Matriz()
 
 
 template<typename T>
-bool Matriz<T>::esVacia ()const{
+bool Matriz<T>::esVacia() const
+{
   	if (this->matriz==NULL)
   		return true;
   	return false;
-  }
+}
 
 template<typename T>
 typename Matriz<T>::Arreglo Matriz<T>::operator[](int indice) const
@@ -134,7 +135,8 @@ void Matriz<T>::setMatriz(T** m, int x, int y)
 	{
 		this->matriz = new T * [this->y];
 
-		for(int i = 0; i < this->y; i++){	
+		for(int i = 0; i < this->y; i++)
+		{	
 			this->matriz[i] = new T [this->x];
 			for (int j = 0; j<this->x; j++)
 				this->matriz [i][j] = m[i][j];
@@ -153,6 +155,12 @@ const Matriz<T> & Matriz<T>::operator = (const Matriz &m)
 		this->matriz=NULL;
 	}	
 
+	if(m.esVacia())
+	{
+		this->setMatriz(NULL, 0, 0);
+		return *this;
+	}
+
 	this->x = m.x;
 	this->y = m.y;
 
@@ -160,9 +168,9 @@ const Matriz<T> & Matriz<T>::operator = (const Matriz &m)
 
 	for(int i = 0; i < this->y; i++)
 	{	
-			this->matriz[i] = new T [this->x];
-			for(int j = 0; j<this->x; j++)
-				this->matriz [i][j] = m.matriz [i][j];
+		this->matriz[i] = new T [this->x];
+		for(int j = 0; j<this->x; j++)
+			this->matriz [i][j] = m.matriz [i][j];
 	}
 		
 	return *this;
@@ -173,20 +181,15 @@ template <typename T>
 void Matriz<T>::imprimir()
 {
 	cout << this->x << endl <<this->y << endl;
-if(this->matriz==NULL)
-	cout << "Matriz nula" << endl;
-else{
-
-	for (int i=0;i<this->y;i++)
+	if(this->matriz==NULL)
+		cout << "Matriz nula" << endl;
+	else
 	{
-		for (int j=0;j<this->x;j++)
-			cout<<this->matriz[i][j];
-
+		for (int i=0;i<this->y;i++)
+			for (int j=0;j<this->x;j++)
+				cout<<this->matriz[i][j];
+		cout<<endl;
 	}
-	cout<<endl;
-}
-
-
 }
 
 #endif

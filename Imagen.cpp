@@ -31,28 +31,7 @@ Imagen::Imagen(const Imagen &i)
 	this->intensidadMax = i.intensidadMax;
 	this->sizeX = i.sizeX;
 	this->sizeY = i.sizeY;
-
-	Matriz<Pixel> aux = i.getPixeles();
-
-	this->pixeles = aux;
-	/*
-	if(!aux)
-		this->pixeles = aux;
-	else
-	{
-		this->pixeles = new Pixel*[this->sizeY];
-		for(int i = 0; i < this->sizeY; i++)
-		{
-			this->pixeles[i] = new Pixel[this->sizeX];
-			for(int j = 0; j < this->sizeX; j++)
-				this->pixeles[i][j] = aux[i][j];
-		}
-
-		for(int i = 0; i < this->sizeY; i++)
-			delete[] aux[i];
-		delete[] aux;
-	}
-	*/
+	this->pixeles = i.getPixeles();
 }
 
 Imagen::~Imagen()
@@ -113,10 +92,7 @@ Matriz<Pixel> Imagen::getPixeles() const
 Matriz<int> Imagen::getIntensidadPixeles() const
 {
 	if(this->pixeles.esVacia()==true)
-	{	
-		Matriz<int> aux; 
-		return aux; //Devuelvo matriz vacía
-	}
+		return Matriz<int>();
 
 	Matriz<int> intensidadPixeles (this->sizeX,this->sizeY);
 	for(int i = 0; i < this->sizeY; i++)
@@ -148,13 +124,6 @@ Imagen &Imagen::operator = (const Imagen &i)
 	this->intensidadMax = i.intensidadMax;
 	this->sizeX = i.sizeX;
 	this->sizeY = i.sizeY;
-
-	if(i.getPixeles().esVacia())
-	{	
-		this->pixeles.setMatriz(NULL,0,0);
-		return *this;
-	}
-
 	this->pixeles = i.getPixeles();
 
 	return *this;
@@ -196,10 +165,10 @@ Imagen Imagen::transformarExpZ() const
 				intensidad = 0;
 			else
 				intensidad = this->pixeles[iOrig][jOrig].getIntensidad();
-			aux [i][j] = Pixel(intensidad, posDest);
+			aux[i][j] = Pixel(intensidad, posDest);
 		}
 	}
-	dest.pixeles=aux;
+	dest.pixeles = aux;
 	return dest;
 }
 
