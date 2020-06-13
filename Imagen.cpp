@@ -4,10 +4,10 @@
 #include <sstream>
 #include <math.h>
 
-Imagen::Imagen(int **intensidadPixeles, int sx, int sy, int im)
+Imagen::Imagen(Matriz<int> intensidadPixeles, int sx, int sy, int im)
 {
 	// Si los valores son invalidos, se crea una imagen nula por defecto.
-	if(sx < 1 || sy < 1 || im < 1 || im > INTENSIDADMAX_MAX || intensidadPixeles == NULL)
+	if(sx < 1 || sy < 1 || im < 1 || im > INTENSIDADMAX_MAX || intensidadPixeles.esVacia()==true)
 	{
 		this->intensidadMax = 1;
 		this->sizeX = 0;
@@ -65,9 +65,9 @@ bool Imagen::setIntensidadMax(int im)
 	return true;
 }
 
-bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
+bool Imagen::setPixeles(Matriz<int> intensidadPixeles, int sx, int sy)
 {
-	if(sx<1 || sy<1 || intensidadPixeles == NULL)
+	if(sx<1 || sy<1 || intensidadPixeles.esVacia()==true)
 		return false;
 
 	if(this->pixeles)
@@ -77,7 +77,6 @@ bool Imagen::setPixeles(int **intensidadPixeles, int sx, int sy)
 		delete[] this->pixeles;
 		this->pixeles = NULL;
 	}
-
 
 	this->sizeX = sx;
 	this->sizeY = sy;
@@ -129,18 +128,18 @@ Pixel **Imagen::getPixeles() const
 	return copia;
 }
 
-int **Imagen::getIntensidadPixeles() const
+Matriz<int> Imagen::getIntensidadPixeles() const
 {
 	if(!this->pixeles)
-		return NULL;
+	{	
+		Matriz<int> aux; 
+		return aux; //Devuelvo matriz vacía
+	}
 
-	int **intensidadPixeles = new int*[this->sizeY];
+	Matriz<int> intensidadPixeles (this->sizeX,this->sizeY);
 	for(int i = 0; i < this->sizeY; i++)
-	{
-		intensidadPixeles[i] = new int[this->sizeX];
 		for(int j = 0; j < this->sizeX; j++)
 			intensidadPixeles[i][j] = this->pixeles[i][j].getIntensidad();
-	}
 	return intensidadPixeles;
 }
 
@@ -161,7 +160,6 @@ int Imagen::getIntensidadMax() const
 
 Imagen &Imagen::operator = (const Imagen &i)
 {
-
 	if(this->pixeles)
 	{
 		for(int i = 0; i < this->sizeY; i++)
@@ -271,47 +269,24 @@ bool Imagen::leerArchivoPgm(istream *iss)
 		return false;
 
 	int i,j;
-	int **aux = new int*[y];
+	Matriz<int> aux(x,y);
 	for(i=0; i < y; i++)
 	{
-		aux[i] = new int[x];
 		for (j=0;j<x;j++)
-			if(!(*iss>>aux[i][j]))
-			{
-				for(int k = 0; k <= i; k++)
-					delete[] aux[k];
-				delete[] aux;
-					
-				return false;
-			}		 
+			if(!(*iss>>aux[i][j]))	
+				return false;		 
 	}
+
 	
 	// Se chequea si la matriz es más grande de lo que dice, si hay algun numero mas.
 	// Si hay algo atrás del último número (sea un espacio, una letra, etc) no es tomado en cuenta.
 	if((*iss>>i))
-	{ 
-		for(int i = 0; i < y; i++)
-			delete[] aux[i];
-		delete[] aux;
-
 		return false;
-	}
 
 	// Se copia la data al objeto imagen.
 	this->intensidadMax = intensidadMax;
 	if(!this->setPixeles(aux, x, y))
-	{
-		for(int i = 0; i < y; i++)
-			delete[] aux[i];
-		delete[] aux;
-
-		return false;
-	} 
-	
-	// Se libera memoria del vector auxiliar utilizado.
-	for(int i = 0; i < y; i++)
-		delete[] aux[i];
-	delete[] aux;
+		return false; 
 
 	return true;
 }
@@ -329,8 +304,10 @@ void Imagen::escribirArchivoPgm(ostream *oss) const
 	int i, j;
 	for(i = 0; i < this->sizeY; i++)
 	{
-		for(j = 0; j < this->sizeX - 1; j++)
+		for(j = 0; j < this->sizeX-1; j++){
 			(*oss) << this->pixeles[i][j].getIntensidad() << " ";
+		}
+
 		(*oss) << this->pixeles[i][j].getIntensidad() << endl;
 	}
 }
