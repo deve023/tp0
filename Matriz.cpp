@@ -29,10 +29,11 @@ int main(){
 	Matriz<int> aux3;
 	aux3.setMatriz(array,3,5);
 	aux3.imprimir();
+	aux3.setMatriz(array,3,5);
 
 	for (int i=0;i<5;i++)
-		delete array[i];
-	delete array;
+		delete[] array[i];
+	delete[] array;
 
 	cout << "TEST 4"<< endl;
 

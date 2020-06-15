@@ -12,22 +12,6 @@ private:
 	int x,y;
 	T ** matriz;
 	
-
-	class Arreglo 
-	{
-	private:
-
-		friend class Matriz;
-
-		T* arreglo;
-
-
-    public:
-        Arreglo(T* a);
-        T & operator[](int);
-    };
-
-
 public:
 	
 	Matriz ();
@@ -36,23 +20,12 @@ public:
 	~Matriz();
 
 	bool esVacia ()const;	
-	Arreglo operator[](int) const;
+	T* operator[](int) const;
 	void setMatriz (T**, int , int);
 	const Matriz &operator = (const Matriz &);
 	void imprimir();
 	
 };
-
-template<typename T>
-Matriz<T>::Arreglo::Arreglo(T* a) : arreglo(a)
-{
-}
-
-template<typename T>
-T& Matriz<T>::Arreglo::operator[](int indice) 
-{
-	return arreglo[indice];
-}
 
 template<typename T>
 Matriz<T>::Matriz () : x(0), y(0), matriz(NULL)
@@ -109,9 +82,9 @@ bool Matriz<T>::esVacia() const
 }
 
 template<typename T>
-typename Matriz<T>::Arreglo Matriz<T>::operator[](int indice) const
+T* Matriz<T>::operator[](int indice) const
 {
-    return Arreglo(matriz[indice]);
+    return matriz[indice];
 }
 
 template <typename T>
@@ -123,8 +96,8 @@ void Matriz<T>::setMatriz(T** m, int x, int y)
 	if (this->matriz)
 	{
 		for (int i=0; i < this->y; i++)
-			delete this->matriz [i];
-		delete this -> matriz;
+			delete[] this->matriz [i];
+		delete[] this -> matriz;
 		this->matriz=NULL;
 	}
 
@@ -186,8 +159,11 @@ void Matriz<T>::imprimir()
 	else
 	{
 		for (int i=0;i<this->y;i++)
+		{
 			for (int j=0;j<this->x;j++)
 				cout<<this->matriz[i][j];
+			cout<<endl;
+		}
 		cout<<endl;
 	}
 }
