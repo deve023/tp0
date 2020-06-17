@@ -7,7 +7,7 @@
 Imagen:: Imagen ()
 {
 	this->intensidadMax=1;
-	this->pixeles.setMatriz(NULL,0,0);
+	this->pixeles.setMatrizNULL();
 }
 
 Imagen::Imagen(Matriz<int> intensidadPixeles, int sx, int sy, int im)
@@ -18,10 +18,10 @@ Imagen::Imagen(Matriz<int> intensidadPixeles, int sx, int sy, int im)
 		this->intensidadMax = 1;
 		this->sizeX = 0;
 		this->sizeY = 0;
-		this->pixeles.setMatriz(NULL,0,0);
+		this->pixeles.setMatrizNULL();
 	}
 
-	this->pixeles.setMatriz(NULL,0,0);
+	this->pixeles.setMatrizNULL();
 	this->intensidadMax = im;
 	this->setPixeles(intensidadPixeles, sx, sy);
 }
@@ -53,7 +53,7 @@ bool Imagen::setPixeles(Matriz<int> intensidadPixeles, int sx, int sy)
 		return false;
 
 	if(this->pixeles.esVacia()==false)
-		this->pixeles.setMatriz(NULL,0,0);
+		this->pixeles.setMatrizNULL();
 
 	this->sizeX = sx;
 	this->sizeY = sy;
@@ -119,7 +119,7 @@ int Imagen::getIntensidadMax() const
 Imagen &Imagen::operator = (const Imagen &i)
 {
 	if(this->pixeles.esVacia()==false)
-		this->pixeles.setMatriz(NULL,0,0);
+		this->pixeles.setMatrizNULL();
 
 	this->intensidadMax = i.intensidadMax;
 	this->sizeX = i.sizeX;

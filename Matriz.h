@@ -21,9 +21,8 @@ public:
 
 	bool esVacia ()const;	
 	T* operator[](int) const;
-	void setMatriz (T**, int , int);
+	void setMatrizNULL();
 	const Matriz &operator = (const Matriz &);
-	void imprimir();
 	
 };
 
@@ -88,49 +87,27 @@ T* Matriz<T>::operator[](int indice) const
 }
 
 template <typename T>
-void Matriz<T>::setMatriz(T** m, int x, int y)
+void Matriz<T>::setMatrizNULL()
 {
-	this->x=x;
-	this->y=y;
-
-	if (this->matriz)
+	if(this->matriz)
 	{
-		for (int i=0; i < this->y; i++)
-			delete[] this->matriz [i];
-		delete[] this -> matriz;
-		this->matriz=NULL;
-	}
-
-	if (m==NULL)
-		this->matriz=NULL;
-
-	else
-	{
-		this->matriz = new T * [this->y];
-
 		for(int i = 0; i < this->y; i++)
-		{	
-			this->matriz[i] = new T [this->x];
-			for (int j = 0; j<this->x; j++)
-				this->matriz [i][j] = m[i][j];
-		}
+			delete[] this->matriz[i];
+		delete[] this->matriz;
+		this->matriz = NULL;
+		this->x = 0;
+		this->y = 0;
 	}
 }	
 
 template <typename T>
 const Matriz<T> & Matriz<T>::operator = (const Matriz &m)
 {
-
-	if (this->matriz){
-		for(int i = 0; i < this->y; i++)
-			delete[] this->matriz[i];
-		delete[] this->matriz;
-		this->matriz=NULL;
-	}	
+	this->setMatrizNULL();
 
 	if(m.esVacia())
 	{
-		this->setMatriz(NULL, 0, 0);
+		this->setMatrizNULL();
 		return *this;
 	}
 
@@ -149,24 +126,4 @@ const Matriz<T> & Matriz<T>::operator = (const Matriz &m)
 	return *this;
 }
 
-
-template <typename T>
-void Matriz<T>::imprimir()
-{
-	cout << this->x << endl <<this->y << endl;
-	if(this->matriz==NULL)
-		cout << "Matriz nula" << endl;
-	else
-	{
-		for (int i=0;i<this->y;i++)
-		{
-			for (int j=0;j<this->x;j++)
-				cout<<this->matriz[i][j];
-			cout<<endl;
-		}
-		cout<<endl;
-	}
-}
-
 #endif
-
