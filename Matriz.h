@@ -19,9 +19,17 @@ public:
 	Matriz (int , int );
 	~Matriz();
 
+	// Devuelve un booleano indicando si la matriz es vacia.
+	// pre: La matriz debe haber sido creada.
+	// post: -
 	bool esVacia ()const;	
-	T* operator[](int) const;
+
+	// Libera la memoria asignada a la matriz y le asgina valores nulos a los atributos.
+	// pre: -
+	// post: -
 	void setMatrizNULL();
+
+	T* operator[](int) const;
 	const Matriz &operator = (const Matriz &);
 	
 };
